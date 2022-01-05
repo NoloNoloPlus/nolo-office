@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.3/dist/css/bulma-carousel.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bulma-calendar@6.1.15/dist/css/bulma-calendar.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css"
+        integrity="sha256-xi0ce0gpVJ9pzkRRuhwspstPyKA0BXGRnyJcfMiYwpE=" crossorigin="anonymous">
+    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script defer src="../../node_modules/rater-js/index.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/js/bulma-carousel.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bulma-calendar@6.1.15/dist/js/bulma-calendar.min.js"></script>
+    <!-- <script defer src="../../scripts/utils.js"></script> -->
+    <script defer src="../../scripts/products/product.js"></script>
+
+
+    <title>Prodotto - Nolo Office</title>
+
+
+
+    <style>
+        .carousel{
+            overflow: hidden;
+        }
+
+        .card-image {
+            max-width: 100%;
+            max-height: 100vh;
+            margin: auto;
+        }
+
+        .table {
+            margin-left: auto;
+            margin-right: auto;
+            background-color: rgb(246, 246, 246);
+        }
+
+        .card {
+            background-color: rgb(202, 255, 202);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="">
+                <img src="../../images/NologoExtended.png" height="112" alt="logo">
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu">
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-primary" href="./catalog.html">
+                            <strong>Catalogo</strong>
+                        </a>
+                        <a class="button is-primary">
+                            <strong>Noleggi</strong>
+                        </a>
+                        <a class="button is-primary" href="../clients/overview.html">
+                            <strong>Clienti</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <section class="section">
+        <div class="pageloader is-active"><span class="title">Loading</span></div>
+        <div class="columns is-vcentered is-centered">
+            <div class="column is-half">
+                <div class="box">
+                    <div id="carousel" class="carousel">
+                    </div>
+                </div>
+                <div class="buttons is-centered">
+                    <button class="button is-info">Edit product</button>
+                    <button class="button is-danger">Remove product</button>
+                </div>
+            </div>
+            <div class="column is-half has-text-centered">
+                <div id="product-info" class="box">
+                    <button id="quote-button" class="button is-success" style="display: none;">Get quote</button>
+                    <div id="error" class="help is-danger"></div>
+                </div>
+            </div>
+        </div>
+        <div class="columns is-centered">
+            <div class="column has-text-centered">
+                <div class="box">
+                    <p id="instances-title" class="title is-3">Product instances</p>
+                    <div class="buttons are-medium is-centered">
+                        <button id="add-instance" class="button is-primary is-light"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="add-instance-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Aggiungi instance</p>
+                    <button id="add-instance-modal-close" class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <form id="add-instance-form" method="post">
+                        <div class="field">
+                            <label class="label" for="name">Nome</label>
+                            <div class="control">
+                                <input id="instance-name" name="name" class="input" type="text"
+                                    placeholder="Inserire il nome del prodotto qui">
+                            </div>
+                        </div>
+                        
+                        <div class="field">
+                            <label class="label" for="currentStatus">Status</label>
+                            <div class="control">
+                                <div class="select">
+                                    <select>
+                                        <option>new</option>
+                                        <option>...</option>
+                                        <option>...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+        
+                        <div id="otherImagesList" class="field">
+                            <label class="label" for="otherImages">Ulteriori immagini (opzionale)</label>
+                            <div class="control">
+                                <input id="object-otherImages" name="otherImages" class="input" type="text" placeholder="">
+                            </div>
+                        </div>
+        
+                        <div class="buttons are-medium is-centered">
+                            <button id="plus-image" class="button is-primary is-light"><i class="fas fa-plus"></i></button>
+                        </div>
+        
+        
+                        <!-- Image uploader -->
+                        <!-- <div class="field">
+                                    <div class="file has-name is-boxed is-centered">
+                                        <label id="images-upload" class="file-label">
+                                            <input id="images-upload-input" class="file-input" type="file" name="images" accept="image/*" multiple>
+                                            <span class="file-cta">
+                                                <span class="file-icon">
+                                                    <i class="fas fa-upload"></i>
+                                                </span>
+                                                <span class="file-label">
+                                                    Seleziona immagini...
+                                                </span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div> -->
+        
+                        <div class="field">
+                            <div class="box">
+                                <div class="columns is-centered">
+                                    <label class=label>New instance</label>
+                                    <div class="column is-half is-narrow has-text-centered">
+                                        <label class="label">Date range</label>
+                                        <div class="control">
+                                            <input id="object-price" name="price" class="input" type="number"
+                                                placeholder="Inserire il prezzo del prodotto">
+                                        </div>
+                                    </div>
+                                    <div class="column is-half is-narrow has-text-centered">
+                                        <label class="label">Prezzo</label>
+                                        <div class="control">
+                                            <input id="object-price" name="price" class="input" type="number"
+                                                placeholder="Inserire il prezzo del prodotto">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+        
+                    </form>
+                </section>
+                <footer class="modal-card-foot">
+                    <button type="submit" class="button is-success">Aggiungi</button>
+                    <button id="add-instance-modal-cancel" class="button">Annulla</button>
+                </footer>
+            </div>
+        </div>
+        
+
+    </section>
+
+</body>
+<footer>
+    <script id="carousel-images" type="text/x-handlebars-template">
+        <div class="item-1">
+            <div class="card-image">
+                <figure class="image is-4by3">
+                    <img class="card-image" src="{{coverImage}}" alt="Placeholder image">
+                </figure>
+            </div>
+        </div>
+        {{#each otherImages}}
+        <div class="item-{{offset @index}}">
+            <div class="card-image">
+                <figure class="image is-4by3">
+                    <img class="card-image" src="{{this}}" alt="Placeholder image">
+                </figure>
+            </div>
+        </div>
+        {{/each}}
+    </script>
+
+    <script id="product-info-template" type="text/x-handlebars-template">
+        <p class="title is-1">{{name}}</p>
+        <p class="subtitle is-4">{{description}}</p>
+        <div class="is-inline-block">
+            <input type="date" id="bulma-calendar">
+        </div>
+        <br> <br>
+    </script>
+
+    <script id="product-instances-template" type="text/x-handlebars-template">
+        {{#each instances}}
+        <div class="block">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title is-centered">
+                        {{name}}
+                    </p>
+                </header>
+                <br>
+                <p class="has-text-weight-semibold">Status: {{currentStatus}}</p>
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each availability}}
+                        <tr>
+                            <td>{{from}}</td>
+                            <td>{{to}}</td>
+                            <td>{{price}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                <div class="buttons is-centered">
+                    <button class="button is-info">Edit instance</button>
+                    <button class="button is-danger">Remove instance</button>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </script>
+    
+</footer>
+
+</html>

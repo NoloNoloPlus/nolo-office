@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css"
+        integrity="sha256-xi0ce0gpVJ9pzkRRuhwspstPyKA0BXGRnyJcfMiYwpE=" crossorigin="anonymous">
+    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script defer src="../../scripts/utils.js"></script>
+    <script defer src="../../scripts/clients/client.js"></script>
+
+    <title>Cliente - Nolo Office</title>
+</head>
+
+<body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="">
+                <img src="../../images/NologoExtended.png" height="112" alt="logo">
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu">
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-primary" href="../products/catalog.html">
+                            <strong>Catalogo</strong>
+                        </a>
+                        <a class="button is-primary">
+                            <strong>Noleggi</strong>
+                        </a>
+                        <a class="button is-primary" href="./overview.html">
+                            <strong>Clienti</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <section class="section">
+        <div class="pageloader is-active"><span class="title">Loading</span></div>
+        <div class="box">
+            <div class="columns">
+                <div class="column">
+                    <label id="client-id" class="label">ID: </label>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Nome</label>
+                        <div class="control">
+                            <input name="firstName" class="input" type="text" placeholder="Nome" readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Cognome</label>
+                        <div class="control">
+                            <input name="lastName" class="input" type="text" placeholder="Cognome" readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control">
+                            <input name="email" class="input" type="text" placeholder="Email" readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Azienda</label>
+                        <div class="control">
+                            <input name="company" class="input" type="text" placeholder="Telefono">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Via</label>
+                        <div class="control">
+                            <input name="street" class="input" type="text" placeholder="Via">
+                        </div>
+                    </div>
+                </div>
+            </div>  
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Città</label>
+                        <div class="control">
+                            <input name="city" class="input" type="text" placeholder="Città">
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Provincia</label>
+                        <div class="control">
+                            <input name="state" class="input" type="text" placeholder="Provincia">
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">CAP</label>
+                        <div class="control">
+                            <input name="zip" class="input" type="text" placeholder="CAP">
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Nazione</label>
+                        <div class="control">
+                            <input name="country" class="input" type="text" placeholder="Nazione">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Note</label>
+                        <div class="control">
+                            <textarea class="textarea" placeholder="Note"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <table class="table is-hoverable is-fullwidth">
+
+            </table>
+
+            <!-- TODO: how to integrate modal -->
+            <div class="modal">
+                <div class="modal-background"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Modal title</p>
+                        <button class="delete" aria-label="close"></button>
+                    </header>
+                    <section class="modal-card-body">
+                        <!-- Content ... -->
+                    </section>
+                    <footer class="modal-card-foot">
+                        <button class="button is-success">Save changes</button>
+                        <button class="button">Cancel</button>
+                    </footer>
+                </div>
+            </div>
+            <!-- end of TODO -->
+            <div id="control-buttons" class="buttons">
+                <button id="delete-client" class="button is-danger">Rimuovi</button>
+                <button id="update-client-pending" class="button is-info" style="display:none;">Salva</button>
+                <button id="update-client" class="button is-info">Modifica</button>
+                <button id="cancel-update" class="button is-outlined" style="display:none;">Cancella</div>
+            </div>
+        </div>
+    </section>
+</body>
+<footer>
+    <script>
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("birthday").setAttribute("max", today);
+    </script>
+
+    <!-- TODO: lista dei noleggi -->
+    <script id="client-row-template" type="text/x-handlebars-template">
+        <thead>
+            <tr>
+                <th><abbr title="ID Cliente">ID</abbr></th>
+                <th>Nome</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each results}}
+            <tr class="is-clickable">
+                <td id="client-id">{{id}}</td>
+                <td>{{name}}</td>
+                <td>{{email}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </script>
+</footer>
+</html>
