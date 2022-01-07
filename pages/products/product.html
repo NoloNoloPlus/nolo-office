@@ -16,7 +16,13 @@
     <script defer src="../../node_modules/rater-js/index.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/js/bulma-carousel.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/bulma-calendar@6.1.15/dist/js/bulma-calendar.min.js"></script>
-    <!-- <script defer src="../../scripts/utils.js"></script> -->
+    
+
+    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+        <!-- <script defer src="../../scripts/utils.js"></script> -->
     <script defer src="../../scripts/products/product.js"></script>
 
 
@@ -68,7 +74,7 @@
                         <a class="button is-primary" href="./catalog.html">
                             <strong>Catalogo</strong>
                         </a>
-                        <a class="button is-primary">
+                        <a class="button is-primary" href="../rentals/overview.html">
                             <strong>Noleggi</strong>
                         </a>
                         <a class="button is-primary" href="../clients/overview.html">
@@ -89,7 +95,7 @@
                 </div>
                 <div class="buttons is-centered">
                     <button class="button is-info">Edit product</button>
-                    <button class="button is-danger">Remove product</button>
+                    <button id="remove-product" class="button is-danger">Remove product</button>
                 </div>
             </div>
             <div class="column is-half has-text-centered">
@@ -99,6 +105,20 @@
                 </div>
             </div>
         </div>
+
+        <!-- TODO: calendar with the breakdown -->
+        <div id="quote-breakdown" class="columns is-centered" style="display: none;">
+            <div class="column has-text-centered">
+                <div class="box">
+                    <p class="title is-4">Quote breakdown</p>
+                    
+                </div>
+            </div>
+        </div>
+
+        <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />
+
+
         <div class="columns is-centered">
             <div class="column has-text-centered">
                 <div class="box">
@@ -134,66 +154,39 @@
                                 <div class="select">
                                     <select>
                                         <option>new</option>
-                                        <option>...</option>
-                                        <option>...</option>
+                                        <option>worn</option>
+                                        <option>broken</option>
+                                        <option>obliterated</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
-
                         
-        
-                        <div id="otherImagesList" class="field">
-                            <label class="label" for="otherImages">Ulteriori immagini (opzionale)</label>
-                            <div class="control">
-                                <input id="object-otherImages" name="otherImages" class="input" type="text" placeholder="">
-                            </div>
-                        </div>
-        
-                        <div class="buttons are-medium is-centered">
-                            <button id="plus-image" class="button is-primary is-light"><i class="fas fa-plus"></i></button>
-                        </div>
-        
-        
-                        <!-- Image uploader -->
-                        <!-- <div class="field">
-                                    <div class="file has-name is-boxed is-centered">
-                                        <label id="images-upload" class="file-label">
-                                            <input id="images-upload-input" class="file-input" type="file" name="images" accept="image/*" multiple>
-                                            <span class="file-cta">
-                                                <span class="file-icon">
-                                                    <i class="fas fa-upload"></i>
-                                                </span>
-                                                <span class="file-label">
-                                                    Seleziona immagini...
-                                                </span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div> -->
-        
                         <div class="field">
                             <div class="box">
-                                <div class="columns is-centered">
-                                    <label class=label>New instance</label>
-                                    <div class="column is-half is-narrow has-text-centered">
-                                        <label class="label">Date range</label>
-                                        <div class="control">
-                                            <input id="object-price" name="price" class="input" type="number"
-                                                placeholder="Inserire il prezzo del prodotto">
-                                        </div>
+                                <label class=label>New instance</label>
+                                <div class="control">
+                                    <div class="select">
+                                        <select>
+                                            <option>Period 0</option>
+                                            <option id="add-selection">Aggiungi...</option>
+                                        </select>
                                     </div>
-                                    <div class="column is-half is-narrow has-text-centered">
-                                        <label class="label">Prezzo</label>
-                                        <div class="control">
-                                            <input id="object-price" name="price" class="input" type="number"
-                                                placeholder="Inserire il prezzo del prodotto">
-                                        </div>
-                                    </div>
+                                </div>
+                                <br>
+                                <label class="label">Date range</label>
+                                <div class="control">
+                                    <input id="object-price" name="price" class="input" type="number"
+                                        placeholder="Inserire il prezzo del prodotto">
+                                </div>
+                            
+                                <label class="label">Prezzo</label>
+                                <div class="control">
+                                    <input id="object-price" name="price" class="input" type="number"
+                                        placeholder="Inserire il prezzo del prodotto">
                                 </div>
                             </div>
                         </div>
-        
         
                     </form>
                 </section>
@@ -247,7 +240,7 @@
                     </p>
                 </header>
                 <br>
-                <p class="has-text-weight-semibold">Status: {{currentStatus}}</p>
+                <p class="has-text-weight-semibold">Status: <span class="tag is-light">{{currentStatus}}</span></p>
                 <br>
                 <table class="table">
                     <thead>

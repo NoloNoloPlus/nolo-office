@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    var tokens = JSON.parse(localStorage.getItem('tokens'));
-    console.log(tokens);
+    $("#logged-as").html(localStorage.getItem("user"));
 
 });

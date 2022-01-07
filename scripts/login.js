@@ -27,7 +27,9 @@ $(document).ready(function () {
                 }
                 else {
                     clearError();
+                    console.log(data);
                     localStorage.setItem("tokens", JSON.stringify(data.tokens));
+                    localStorage.setItem("user", data.user.firstName + " " + data.user.lastName);
                     let redirect = localStorage.getItem("redirect");
                     localStorage.removeItem("redirect");
                     window.location.href = redirect || "index.html"; 

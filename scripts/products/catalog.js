@@ -80,27 +80,39 @@ $(document).ready(function () {
             formData.append([inputData[i]['name']], inputData[i]['value']);
         }
         formData.append('stars', Number(starRatingStep.getRating()).toFixed(1));
-        // formData.append('images', ($("#images-upload-input")[0].files));
+        formData.append('discounts', []);
+        formData.append('instances', []);
         for (var key of formData.keys()) {
             console.log(key);
             console.log(formData.get(key));
             console.log('---')
         }
+        
+
 
         $.ajax({
             url: "https://site202114.tw.cs.unibo.it/v1/products/",
             type: "POST",
-            data: formData,
-            processData: false,
+            data: {
+                coverImage: 'https://upload.wikimedia.org/wikipedia/commons/thu…gne_Tau.jpg/240px-Talisman_de_Charlemagne_Tau.jpg', 
+                otherImages: [], 
+                name: 'Windsor il Talismano', 
+                description: 'Niente pioggia? Chiedi a Windsor!', 
+                stars: 3,
+                discounts: [],
+                instances: []
+            },
+            //processData: false,
             //dataType: "jsonp",
             headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authentication": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MTY3MDE2MTE3MWM5OTAwMTU5NTQ5NDMiLCJpYXQiOjE2Mzg5MDE1OTgsImV4cCI6MTYzODkwMzM5OCwidHlwZSI6ImFjY2VzcyJ9.VYgw2mBMjKEEmaR1ds8sCazgGr7q1CPKkXxpqcwjMsI"
+                "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
             },
             success: function (data) {
                 console.log(data);
                 resetModal();
+            },
+            failure: function (data) {
+                console.log(data);
             }
         });
     });     

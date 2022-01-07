@@ -9,14 +9,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css"
         integrity="sha256-xi0ce0gpVJ9pzkRRuhwspstPyKA0BXGRnyJcfMiYwpE=" crossorigin="anonymous">
     <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script defer src="../../scripts/utils.js"></script>
-    <script defer src="../../scripts/price.js"></script>
-    <script defer src="../../scripts/boundaries.js"></script>
-    <script defer src="../../scripts/clients/client.js"></script>
+    <script defer src="../../scripts/rentals/rental.js"></script>
 
-    <title>Cliente - Nolo Office</title>
+    <title>Noleggio - Nolo Office</title>
 </head>
 
 <body>
@@ -53,19 +50,23 @@
     </nav>
     <section class="section">
         <div class="pageloader is-active"><span class="title">Loading</span></div>
-        <figure class="image container is-128x128">
-            <img id="avatar-image" class="is-rounded">
-        </figure>
-        <br>
         <div class="box">
-            <div class="columns">
+            <div class="columns is-centered">
                 <div class="column">
-                    <label id="client-id" class="label">ID: </label>
-                    <span id="client-role" class="tag is-light"></span>
+                    <p id="rental-id" class="title is-4">ID: </p>
                 </div>
             </div>
-            <div class="columns">
-                <div class="column">
+            <div class="columns is-centered">
+                <div class="column is-half">
+                    <div class="field">
+                        <label class="label" for="currentStatus">Rented by</label>
+                        <div class="control">
+                            <div class="select">
+                                <select id="user-selection">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                     <div class="field">
                         <label class="label">Nome</label>
                         <div class="control">
@@ -117,7 +118,7 @@
                         </div>
                     </div>
                 </div>
-            </div>  
+            </div>
             <div class="columns">
                 <div class="column">
                     <div class="field">
@@ -152,7 +153,7 @@
                     </div>
                 </div>
             </div>
-            
+
 
             <table class="table is-hoverable is-fullwidth">
 
@@ -177,36 +178,18 @@
             </div>
             <!-- end of TODO -->
             <div id="control-buttons" class="buttons">
-                <button id="delete-client" class="button is-danger">Rimuovi</button>
-                <button id="update-client-pending" class="button is-info" style="display:none;">Salva</button>
-                <button id="update-client" class="button is-info">Modifica</button>
-                <button id="cancel-update" class="button is-outlined" style="display:none;">Cancella</div>
+                <button id="delete-rental" class="button is-danger">Rimuovi</button>
+                <button id="update-rental-pending" class="button is-info" style="display:none;">Salva</button>
+                <button id="update-rental" class="button is-info">Modifica</button>
+                <button id="cancel-update" class="button is-outlined" style="display:none;">Cancella
             </div>
+        </div>
         </div>
     </section>
 </body>
 <footer>
-    <script id="client-rentals-template" type="text/x-handlebars-template">
-        <thead>
-            <tr>
-                <th>ID noleggio</th>
-                <th>ID prodotto</th>
-                <th>Da</th>
-                <th>A</th>
-                <th>Prezzo</th>
-            </tr>
-        </thead>
-        <tbody>
-        {{#each this}}
-            <tr class="is-clickable">
-                <td id="rental-id">{{id}}</td>
-                <td>{{productId}}</td>
-                <td>{{startDate}}</td>
-                <td>{{endDate}}</td>
-                <td>{{price}}</td>
-            </tr>
-        {{/each}}
-        </tbody>
-    </script>
+
+
 </footer>
+
 </html>

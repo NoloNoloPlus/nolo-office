@@ -124,6 +124,12 @@ Handlebars.registerHelper("offset", function (value, options) {
 
 $(document).ready(function () {
 
+    $('input[name="daterange"]').daterangepicker({
+        opens: 'left'
+    }, function (start, end, label) {
+        console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    });
+
     let searchParams = new URLSearchParams(window.location.search);
     let id = searchParams.get('id');
     var calendars;
@@ -161,6 +167,13 @@ $(document).ready(function () {
             let templateInstances = Handlebars.compile($("#product-instances-template").html());
             $(templateInstances(data)).insertAfter("#instances-title");
 
+
+            $('span:contains("new")').addClass("is-success");
+            $('span:contains("worn")').addClass("is-warning");
+            $('span:contains("broken")').addClass("is-danger");
+            $('span:contains("obliterated")').removeClass("is-light");
+            $('span:contains("obliterated")').addClass("is-black");
+
             $('.pageloader').removeClass('is-active');
         },
         error: function (data) {
@@ -181,7 +194,6 @@ $(document).ready(function () {
         };
 
         $("#error").html("");
-        console.log(data);
 
         $.ajax({
             url: "https://site202114.tw.cs.unibo.it/v1/products/" + id + "/quote",
@@ -193,7 +205,7 @@ $(document).ready(function () {
                 "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
             },
             success: function (response) {
-                console.log(response);
+                
             },
             error: function (data) {
                 alert("Something went wrong: " + data.statusText);
@@ -201,8 +213,21 @@ $(document).ready(function () {
         });
     });
 
-
-
+    $("#remove-product").click(function () {
+        $.ajax({
+            url: "https://site202114.tw.cs.unibo.it/v1/products/" + id,
+            type: "DELETE",
+            headers: {
+                "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
+            },
+            success: function (data) {
+                window.location.href = "./catalog.html";
+            },
+            error: function (data) {
+                alert("Something went wrong: " + data.statusText);
+            }
+        });
+    });
 
 
     // Modal

@@ -12,16 +12,9 @@
     <script defer src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script defer src="../../scripts/utils.js"></script>
-    <script defer src="../../scripts/clients/overview.js"></script>
-    
-    <title>Clienti - Nolo Office</title>
+    <script defer src="../../scripts/rentals/rental.js"></script>
 
-    <style>
-        .table {
-            margin-left: auto;
-            margin-right: auto;
-        }
-    </style>
+    <title>Noleggio - Nolo Office</title>
 </head>
 
 <body>
@@ -48,7 +41,7 @@
                         <a class="button is-primary" href="../rentals/overview.html">
                             <strong>Noleggi</strong>
                         </a>
-                        <a class="button is-primary" href="javascript:window.location.reload(true)">
+                        <a class="button is-primary" href="./overview.html">
                             <strong>Clienti</strong>
                         </a>
                     </div>
@@ -58,54 +51,33 @@
     </nav>
     <section class="section">
         <div class="pageloader is-active"><span class="title">Loading</span></div>
-        <div class="columns is-centered">
-            <div class="column is-half">
-                <div class="field">
-                    <div class="control">
-                        <input id="searchbar" class="input" type="text" placeholder="Ricerca cliente...">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="box">
-            <table class="table is-hoverable is-fullwidth">
-
-            </table>
-        </div>
+        
     </section>
 </body>
 <footer>
-    <script id="client-row-template" type="text/x-handlebars-template">
-        <thead>
-            <tr>
-                <th><abbr title="ID Cliente">ID</abbr></th>
-                <th>Ruolo</th>
-                <th>Nome</th>
-                <th>Cognome</th>
-                <th>Email</th>
-                <th>Verified email</th>
-                <th>Nazione</th>
-                <th>Città</th>
-            </tr>
-        </thead>
-        <tbody>
-        {{#each results}}
-            <tr class="is-clickable">
-                <td id="client-id">{{id}}</td>
-                <td>{{role}}</td>
-                <td>{{firstName}}</td>
-                <td>{{lastName}}</td>
-                <td>{{email}}</td>
-                {{#if isEmailVerified}}
-                <td><span class="tag is-success is-light">Verificata</span></td>
-                {{else}}
-                <td><span class="tag is-danger is-light">Non Verificata</span></td>
-                {{/if}}
-                <td>{{address.country}}</td>
-                <td>{{addrss.city}}</td>
-            </tr>
-        {{/each}}
-        </tbody>
-    </script>
+    <script id="rental-template" type="text/x-handlebars-template">
+        <div class="columns is-centered">
+            <div class="column is-half has-text-centered">
+                <p class="title is-5">ID: {{id}}</p>
+                <p class="subtitle is-6">Status: {{status}}</p>
+            </div>
+        </div>
+        <div class="columns is-centered">
+            <div class="column is-half has-text-centered">
+                <div class="box">
+                    <p id="rentedBy" class="title is-4">Noleggiato da: </p>
+                    <div class="box">
+                        Profit ...
+                    </div>
+                    <p id="productName" class="title is-5"></p>
+                    <p id="productDiscounts" class="subtitle is-6">sconti prodotto</p>
+
+                </div>
+                <p class="subtitle is-5">Sconti: {{discounts}}</p>
+                <p id="employeeName" class="title is-5">Approvato da: </p>
+            </div>
+        </div>
+    </script> 
 </footer>
+
 </html>

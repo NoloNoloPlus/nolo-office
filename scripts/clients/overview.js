@@ -23,7 +23,6 @@ $(document).ready(function () {
 
     $("table").on('click', 'tr', function () {
         let id = $(this).find("#client-id").html();
-        console.log(id);
         window.location.href = "client.html?id=" + id;
     });
 
