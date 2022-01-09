@@ -1,8 +1,8 @@
-function findBoundaries(r) {
+function findBoundaries(rental) {
     let startDate = null, endDate = null;
 
-    let object_id = Object.keys(r.products)[0];
-    for (value of Object.values(r.products[object_id].instances)) {
+    let object_id = Object.keys(rental.products)[0];
+    for (value of Object.values(rental.products[object_id].instances)) {
         for (var i = 0; i < value.dateRanges.length; i++) {
 
             let to = new Date(value.dateRanges[i].to);

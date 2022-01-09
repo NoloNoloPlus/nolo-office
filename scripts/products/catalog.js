@@ -75,46 +75,43 @@ $(document).ready(function () {
     // Convert from serialized form to JSON
     $('button[type="submit"]').click(function (e) {
         var inputData = $("#add-object-form").serializeArray();
-        var formData = new FormData();
-        for (var i = 0; i < inputData.length; i++) {
-            formData.append([inputData[i]['name']], inputData[i]['value']);
-        }
-        formData.append('stars', Number(starRatingStep.getRating()).toFixed(1));
-        formData.append('discounts', []);
-        formData.append('instances', []);
-        for (var key of formData.keys()) {
-            console.log(key);
-            console.log(formData.get(key));
-            console.log('---')
-        }
-        
+        console.log(inputData);
 
-
-        $.ajax({
-            url: "https://site202114.tw.cs.unibo.it/v1/products/",
-            type: "POST",
-            data: {
-                coverImage: 'https://upload.wikimedia.org/wikipedia/commons/thu…gne_Tau.jpg/240px-Talisman_de_Charlemagne_Tau.jpg', 
-                otherImages: [], 
-                name: 'Windsor il Talismano', 
-                description: 'Niente pioggia? Chiedi a Windsor!', 
-                stars: 3,
-                discounts: [],
-                instances: []
-            },
-            //processData: false,
-            //dataType: "jsonp",
-            headers: {
-                "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
-            },
-            success: function (data) {
-                console.log(data);
-                resetModal();
-            },
-            failure: function (data) {
-                console.log(data);
+        var data = {
+            otherImages: []
+        };
+        $.each(inputData, function () {
+            if (this.name == 'otherImages') {
+                if (this.value != "") {
+                    data[this.name].push(this.value);
+                }
+            } else {
+                data[this.name] = this.value;
             }
         });
+        
+        if (data.name == "" || data.coverImage == "") {
+            alert("Fields Name and Cover Image are required");
+            e.preventDefault();
+            return;
+        } else {
+            $.ajax({
+                url: "https://site202114.tw.cs.unibo.it/v1/products/",
+                type: "POST",
+                data: data,
+                headers: {
+                    "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
+                },
+                success: function (data) {
+                    console.log(data);
+                    resetModal();
+                    window.location.reload();
+                },
+                error: function (data) {
+                    alert("Error: " + data.responseText);
+                }
+            });
+        }  
     });     
     
     $("#searchbar").on("keyup", function () {

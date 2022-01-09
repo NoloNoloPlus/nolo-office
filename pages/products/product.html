@@ -17,12 +17,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/js/bulma-carousel.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/bulma-calendar@6.1.15/dist/js/bulma-calendar.min.js"></script>
     
-
-    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
-        <!-- <script defer src="../../scripts/utils.js"></script> -->
+    <script defer src="../../scripts/price.js"></script>
+    <script defer src="../../scripts/utils.js"></script>
     <script defer src="../../scripts/products/product.js"></script>
 
 
@@ -49,6 +45,11 @@
 
         .card {
             background-color: rgb(202, 255, 202);
+        }
+
+        .add-daterange-discount, .remove-daterange-discount {
+            width: 30px;
+            height: 30px;
         }
     </style>
 </head>
@@ -93,10 +94,6 @@
                     <div id="carousel" class="carousel">
                     </div>
                 </div>
-                <div class="buttons is-centered">
-                    <button class="button is-info">Edit product</button>
-                    <button id="remove-product" class="button is-danger">Remove product</button>
-                </div>
             </div>
             <div class="column is-half has-text-centered">
                 <div id="product-info" class="box">
@@ -106,18 +103,13 @@
             </div>
         </div>
 
-        <!-- TODO: calendar with the breakdown -->
-        <div id="quote-breakdown" class="columns is-centered" style="display: none;">
+        <div id="breakdown-box" class="columns is-centered" style="display: none;">
             <div class="column has-text-centered">
-                <div class="box">
-                    <p class="title is-4">Quote breakdown</p>
+                <div id="breakdown" class="box">
                     
                 </div>
             </div>
         </div>
-
-        <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />
-
 
         <div class="columns is-centered">
             <div class="column has-text-centered">
@@ -130,16 +122,38 @@
             </div>
         </div>
 
+        <div class="columns is-centered">
+            <div class="column has-text-centered">
+                <div class="box">
+                    <p class="title is-3">Sconti prodotto</p>
+                    <div id="product-discounts">
 
-        <div id="add-instance-modal" class="modal">
+                    </div>
+                    <br>
+                    <button id="add-product-discount" type="button" class="button is-primary is-light"><i class="fas fa-plus"></i></button>
+                    <button id="remove-product-discount" type="button" class="button is-danger is-light"><i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="buttons is-right">
+            <button id="remove-product" type="button" class="button is-danger">Remove product</button>
+            <button id="submit-changes" type="button" class="button is-success">Save changes</button>
+        </div>
+        <div id="submit-successful" class="help is-success" style="float: right;"></div>
+
+
+
+        <!-- MODAL -->
+        <div id="edit-instance-modal" class="modal">
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
                     <p class="modal-card-title">Aggiungi instance</p>
-                    <button id="add-instance-modal-close" class="delete" aria-label="close"></button>
+                    <button id="edit-instance-modal-close" class="delete" aria-label="close"></button>
                 </header>
                 <section class="modal-card-body">
-                    <form id="add-instance-form" method="post">
+                    <form id="edit-instance-form" method="post">
                         <div class="field">
                             <label class="label" for="name">Nome</label>
                             <div class="control">
@@ -148,51 +162,45 @@
                             </div>
                         </div>
                         
-                        <div class="field">
+                        <div id="statusfield" class="field">
                             <label class="label" for="currentStatus">Status</label>
-                            <div class="control">
-                                <div class="select">
-                                    <select>
-                                        <option>new</option>
-                                        <option>worn</option>
-                                        <option>broken</option>
-                                        <option>obliterated</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <span class="tag is-clickable is-light">new</span>
+                            <span class="tag is-clickable is-light">worn</span>
+                            <span class="tag is-clickable is-light">broken</span>
+                            <span class="tag is-clickable is-light">obliterated</span>
                         </div>
                         
                         <div class="field">
                             <div class="box">
-                                <label class=label>New instance</label>
-                                <div class="control">
-                                    <div class="select">
-                                        <select>
-                                            <option>Period 0</option>
-                                            <option id="add-selection">Aggiungi...</option>
-                                        </select>
-                                    </div>
+                                <label class=label>Disponibilità</label>
+                                <div id="dateranges">
+
                                 </div>
-                                <br>
-                                <label class="label">Date range</label>
-                                <div class="control">
-                                    <input id="object-price" name="price" class="input" type="number"
-                                        placeholder="Inserire il prezzo del prodotto">
-                                </div>
-                            
-                                <label class="label">Prezzo</label>
-                                <div class="control">
-                                    <input id="object-price" name="price" class="input" type="number"
-                                        placeholder="Inserire il prezzo del prodotto">
-                                </div>
+
+                                <button id="add-daterange" type="button" class="button is-primary"><i class="fas fa-plus"></i></button>
+                                <button id="remove-daterange" type="button" class="button is-danger"><i class="fas fa-minus"></i></button>
                             </div>
                         </div>
+
+                        <div class="field">
+                            <div class="box">
+                                <label class=label>Sconti istanza</label>
+                                <div id="instance-discounts">
+
+                                </div>    
+                                <br>
+                                <button id="add-instance-discount" type="button" class="button is-primary"><i class="fas fa-plus"></i></button>
+                                <button id="remove-instance-discount" type="button" class="button is-danger"><i class="fas fa-minus"></i></button>
+                            </div>
+                        </div>
+
+
         
                     </form>
                 </section>
                 <footer class="modal-card-foot">
-                    <button type="submit" class="button is-success">Aggiungi</button>
-                    <button id="add-instance-modal-cancel" class="button">Annulla</button>
+                    <button id="submit-instance-changes" class="button is-success">Salva</button>
+                    <button id="edit-instance-modal-cancel" class="button">Annulla</button>
                 </footer>
             </div>
         </div>
@@ -231,7 +239,7 @@
     </script>
 
     <script id="product-instances-template" type="text/x-handlebars-template">
-        {{#each instances}}
+        {{#each this}}
         <div class="block">
             <div class="card">
                 <header class="card-header">
@@ -261,14 +269,249 @@
                     </tbody>
                 </table>
                 <div class="buttons is-centered">
-                    <button class="button is-info">Edit instance</button>
-                    <button class="button is-danger">Remove instance</button>
+                    <button id="edit-instance" class="button is-info" instanceid="{{@key}}">Edit instance</button>
+                    <button id="remove-instance" class="button is-danger" instanceid="{{@key}}">Remove instance</button>
                 </div>
             </div>
         </div>
         {{/each}}
     </script>
     
+    <script id="breakdown-template" type="text/x-handlebars-template">
+        <p class="title is-3">{{price}} €</p>
+        <ul>
+            {{#each instances}}
+            <li><strong>{{name}}</strong>
+                <ul>
+                    {{#each dateRanges}}
+                    <li>{{from}} <i class="fas fa-arrow-right"></i> {{to}}: {{totalPrice}} €</li>
+                    {{/each}}
+                </ul>
+            </li>
+            {{/each}}
+        </ul>
+        <br>
+        <div class="container" style="display: flex; justify-content: center;">
+            <div class="field has-addons">
+                <div class="control">
+                    <input id="clientEmail" class="input" type="text" placeholder="Inserisci email cliente">
+                </div>
+                <div class="control">
+                    <a id="confirm-quote-button" class="button is-success">
+                        Conferma
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="no-email" class="help is-danger"></div>
+        <div id="confirmation" class="help is-success"></div>
+    </script>
+
+
+    <!-- DATERANGES -->
+    <script id="dateranges-template" type="text/x-handlebars-template">
+        {{#each availability}}
+        <div class="daterange">
+            <input id="from" type="date" value="{{from}}">
+            <input id="to" type="date" value="{{to}}">
+            <input id="price" type="number" placeholder="Prezzo" value="{{price}}">
+            <div class="daterange-discounts">
+                {{#each discounts}}
+                <div class="daterange-discount">
+                    <i class="fas fa-dot-circle"></i>
+                    <input id="name" type="text" value="{{name}}" placeholder="Nome">
+                    <input id="description" type="text" value="{{description}}" placeholder="Descrizione">
+                    <input id="value" type="number" value="{{value}}" placeholder="Valore">
+                    <div class="field discount-type">
+                        &nbsp; &nbsp;
+                        <span class='tag is-clickable is-light {{#ifEquals type "fixed"}} is-primary {{/ifEquals}}'>fixed</span>
+                        <span
+                            class='tag is-clickable is-light {{#ifEquals type "percentage"}} is-primary {{/ifEquals}}'>percentage</span>
+                        <span
+                            class='tag is-clickable is-light {{#ifEquals type "containsWeekend"}} is-primary {{/ifEquals}}'>containsWeekend</span>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            <button type="button" class="button is-primary is-light add-daterange-discount"><i class="fas fa-plus fa-xs"></i></button>
+            <button type="button" class="button is-danger is-light remove-daterange-discount"><i class="fas fa-minus fa-xs"></i></button>
+            <br>    
+            <br>
+        </div>
+        {{/each}}
+    </script>
+
+    <script id="empty-dateranges-template" type="text/x-handlebars-template">
+        <div class="daterange">
+            <input id="from" type="date" value="{{from}}">
+            <input id="to" type="date" value="{{to}}">
+            <input id="price" type="number" placeholder="Prezzo" value="{{price}}">
+            <div class="daterange-discounts">
+                
+            </div>
+            <button type="button" class="button is-primary is-light add-daterange-discount"><i
+                    class="fas fa-plus fa-xs"></i></button>
+            <button type="button" class="button is-danger is-light remove-daterange-discount"><i
+                    class="fas fa-minus fa-xs"></i></button>
+            <br>
+            <br>
+        </div>
+    </script>
+
+    <!-- DATERANGE DISCOUNTS -->
+    <script id="empty-daterange-discount-template" type="text/x-handlebars-template">
+        <div class="daterange-discount">
+            <i class="fas fa-dot-circle"></i>
+            <input id="name" type="text" placeholder="Nome">
+            <input id="description" type="text" placeholder="Descrizione">
+            <input id="value" type="number" placeholder="Valore">
+            <div class="field discount-type">
+                &nbsp; &nbsp;
+                <span class="tag is-clickable is-light">fixed</span>
+                <span class="tag is-clickable is-light">percentage</span>
+                <span class="tag is-clickable is-light">containsWeekend</span>
+            </div>
+        </div>
+    </script>
+
+
+    <!-- INSTANCE DISCOUNT -->
+    <script id="instance-discounts-template" type="text/x-handlebars-template">
+        {{#each this}}
+        <div class="instance-discount box">
+
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <div class="field discount-type">
+                        &nbsp; &nbsp;
+                        <span class='tag is-clickable is-light {{#ifEquals type "fixed"}} is-primary {{/ifEquals}}'>fixed</span>
+                        <span class='tag is-clickable is-light {{#ifEquals type "percentage"}} is-primary {{/ifEquals}}'>percentage</span>
+                        <span class='tag is-clickable is-light {{#ifEquals type "containsWeekend"}} is-primary {{/ifEquals}}'>containsWeekend</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <input class="input" id="name" type="text" value="{{name}}" placeholder="Nome">
+                </div>
+                <div class="column has-text-centered">
+                    <input class="input" id="value" type="number" value="{{value}}" placeholder="Valore">
+                </div>
+            </div>
+
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <input class="input" id="description" type="text" value="{{description}}" placeholder="Descrizione">
+                </div>
+            </div>
+        
+        </div>
+        {{/each}}
+    </script>
+
+
+    <script id="empty-instance-discount-template" type="text/x-handlebars-template">
+        <div class="instance-discount box">
+
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <div class="field discount-type">
+                        &nbsp; &nbsp;
+                        <span class="tag is-clickable is-light">fixed</span>
+                        <span class="tag is-clickable is-light">percentage</span>
+                        <span class="tag is-clickable is-light">containsWeekend</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <input class="input" id="name" type="text" placeholder="Nome">
+                </div>
+                <div class="column has-text-centered">
+                    <input class="input" id="value" type="number" placeholder="Valore">
+                </div>
+            </div>
+
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <input class="input" id="description" type="text" placeholder="Descrizione">
+                </div>
+            </div>
+        
+        </div>
+    </script> 
+    
+    
+
+    <!-- INSTANCE DISCOUNT -->
+    <script id="product-discounts-template" type="text/x-handlebars-template">
+        {{#each this}}
+        <div class="product-discount box">
+
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <div class="field discount-type">
+                        &nbsp; &nbsp;
+                        <span class='tag is-clickable is-light {{#ifEquals type "fixed"}} is-primary {{/ifEquals}}'>fixed</span>
+                        <span class='tag is-clickable is-light {{#ifEquals type "percentage"}} is-primary {{/ifEquals}}'>percentage</span>
+                        <span class='tag is-clickable is-light {{#ifEquals type "containsWeekend"}} is-primary {{/ifEquals}}'>containsWeekend</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <input class="input" id="name" type="text" value="{{name}}" placeholder="Nome">
+                </div>
+                <div class="column has-text-centered">
+                    <input class="input" id="value" type="number" value="{{value}}" placeholder="Valore">
+                </div>
+            </div>
+
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <input class="input" id="description" type="text" value="{{description}}" placeholder="Descrizione">
+                </div>
+            </div>
+        
+        </div>
+        {{/each}}
+    </script>
+
+
+    <script id="empty-product-discount-template" type="text/x-handlebars-template">
+        <div class="product-discount box">
+
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <div class="field discount-type">
+                        &nbsp; &nbsp;
+                        <span class="tag is-clickable is-light">fixed</span>
+                        <span class="tag is-clickable is-light">percentage</span>
+                        <span class="tag is-clickable is-light">containsWeekend</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <input class="input" id="name" type="text" placeholder="Nome">
+                </div>
+                <div class="column has-text-centered">
+                    <input class="input" id="value" type="number" placeholder="Valore">
+                </div>
+            </div>
+
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <input class="input" id="description" type="text" placeholder="Descrizione">
+                </div>
+            </div>
+        
+        </div>
+    </script>
 </footer>
 
 </html>

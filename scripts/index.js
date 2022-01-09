@@ -1,4 +1,4 @@
 $(document).ready(function () {
-    $("#logged-as").html(localStorage.getItem("user"));
+    $("#logged-as").html(JSON.parse(localStorage.getItem("user"))["firstName"] + " " + JSON.parse(localStorage.getItem("user"))["lastName"]);
 
 });

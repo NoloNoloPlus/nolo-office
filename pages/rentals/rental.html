@@ -11,6 +11,8 @@
     <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script defer src="../../scripts/boundaries.js"></script>
+    <script defer src="../../scripts/price.js"></script>
     <script defer src="../../scripts/utils.js"></script>
     <script defer src="../../scripts/rentals/rental.js"></script>
 
@@ -59,7 +61,11 @@
         <div class="columns is-centered">
             <div class="column is-half has-text-centered">
                 <p class="title is-5">ID: {{id}}</p>
-                <p class="subtitle is-6">Status: {{status}}</p>
+                <p class="subtitle is-6">Status:
+                <span class="tag is-clickable is-light">ready</span>
+                <span class="tag is-clickable is-light">active</span>
+                <span class="tag is-clickable is-light">closed</span>
+                </p>
             </div>
         </div>
         <div class="columns is-centered">
@@ -67,7 +73,7 @@
                 <div class="box">
                     <p id="rentedBy" class="title is-4">Noleggiato da: </p>
                     <div class="box">
-                        Profit ...
+                        <p class="title is-3"><i class="fas fa-money-bill-wave" style="color: rgb(39, 221, 79);"></i>&nbsp; {{profit}} €</p>
                     </div>
                     <p id="productName" class="title is-5"></p>
                     <p id="productDiscounts" class="subtitle is-6">sconti prodotto</p>
