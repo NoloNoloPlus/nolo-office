@@ -9,11 +9,26 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css"
         integrity="sha256-xi0ce0gpVJ9pzkRRuhwspstPyKA0BXGRnyJcfMiYwpE=" crossorigin="anonymous">
     <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script defer src="../../scripts/boundaries.js"></script>
+    <script defer src="../../scripts/price.js"></script>
     <script defer src="../../scripts/utils.js"></script>
     <script defer src="../../scripts/rentals/rental.js"></script>
 
     <title>Noleggio - Nolo Office</title>
+
+    <style>
+        .instance-discount {
+            color: #ffae00;
+        }
+
+        .discounted {
+            text-decoration: line-through;
+        }
+
+        .discount-text {}
+    </style>
 </head>
 
 <body>
@@ -50,145 +65,104 @@
     </nav>
     <section class="section">
         <div class="pageloader is-active"><span class="title">Loading</span></div>
-        <div class="box">
-            <div class="columns is-centered">
-                <div class="column">
-                    <p id="rental-id" class="title is-4">ID: </p>
-                </div>
-            </div>
-            <div class="columns is-centered">
-                <div class="column is-half">
-                    <div class="field">
-                        <label class="label" for="currentStatus">Rented by</label>
-                        <div class="control">
-                            <div class="select">
-                                <select id="user-selection">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Nome</label>
-                        <div class="control">
-                            <input name="firstName" class="input" type="text" placeholder="Nome" readonly="readonly">
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="field">
-                        <label class="label">Cognome</label>
-                        <div class="control">
-                            <input name="lastName" class="input" type="text" placeholder="Cognome" readonly="readonly">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="columns">
-                <div class="column">
-                    <div class="field">
-                        <label class="label">Email</label>
-                        <div class="control">
-                            <input name="email" class="input" type="text" placeholder="Email" readonly="readonly">
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="field">
-                        <label class="label">Azienda</label>
-                        <div class="control">
-                            <input name="company" class="input" type="text" placeholder="Azienda" readonly="readonly">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="columns">
-                <div class="column">
-                    <div class="field">
-                        <label class="label">Via</label>
-                        <div class="control">
-                            <input name="line1" class="input" type="text" placeholder="Via" readonly="readonly">
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="field">
-                        <label class="label">Numero</label>
-                        <div class="control">
-                            <input name="line2" class="input" type="text" placeholder="Numero" readonly="readonly">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="columns">
-                <div class="column">
-                    <div class="field">
-                        <label class="label">Città</label>
-                        <div class="control">
-                            <input name="city" class="input" type="text" placeholder="Città" readonly="readonly">
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="field">
-                        <label class="label">Provincia</label>
-                        <div class="control">
-                            <input name="state" class="input" type="text" placeholder="Provincia" readonly="readonly">
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="field">
-                        <label class="label">CAP</label>
-                        <div class="control">
-                            <input name="zip" class="input" type="text" placeholder="CAP" readonly="readonly">
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="field">
-                        <label class="label">Nazione</label>
-                        <div class="control">
-                            <input name="country" class="input" type="text" placeholder="Nazione" readonly="readonly">
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-
-            <table class="table is-hoverable is-fullwidth">
-
-            </table>
-
-            <!-- TODO: how to integrate modal -->
-            <div class="modal">
-                <div class="modal-background"></div>
-                <div class="modal-card">
-                    <header class="modal-card-head">
-                        <p class="modal-card-title">Modal title</p>
-                        <button class="delete" aria-label="close"></button>
-                    </header>
-                    <section class="modal-card-body">
-                        <!-- Content ... -->
-                    </section>
-                    <footer class="modal-card-foot">
-                        <button class="button is-success">Save changes</button>
-                        <button class="button">Cancel</button>
-                    </footer>
-                </div>
-            </div>
-            <!-- end of TODO -->
-            <div id="control-buttons" class="buttons">
-                <button id="delete-rental" class="button is-danger">Rimuovi</button>
-                <button id="update-rental-pending" class="button is-info" style="display:none;">Salva</button>
-                <button id="update-rental" class="button is-info">Modifica</button>
-                <button id="cancel-update" class="button is-outlined" style="display:none;">Cancella
-            </div>
-        </div>
-        </div>
     </section>
 </body>
 <footer>
+    <script id="rental-template" type="text/x-handlebars-template">
+        <div class="columns is-centered">
+            <div class="column is-half has-text-centered">
+                <p class="title is-5">ID: {{id}}</p>
+                <p class="subtitle is-6">Status:
+                <span class="tag is-clickable is-light">ready</span>
+                <span class="tag is-clickable is-light">active</span>
+                <span class="tag is-clickable is-light">closed</span>
+                </p>
+            </div>
+        </div>
+        <div class="columns is-centered">
+            <div class="column is-half has-text-centered">
+                <div class="box">
+                    <p id="rentedBy" class="title is-4">Noleggiato da: </p>
+                    <div class="columns is-centered">
+                        <div class="column is-half has-text-centered">
+                            <figure class="image container is-128x128">
+                                <img id="user-image" onerror="this.onerror=null; this.src='http://www.gravatar.com/avatar/ee194f150caf4ef175b36caaeb2f7782.jpg?s=48&d=mm'" class="is-rounded">
+                            </figure>
+                        </div>
+                        <div class="column is-half has-text-centered">
+                            <figure class="image container is-128x128">
+                                <img id="product-image" onerror="this.onerror=null; this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRx7ub_01iKN_RXyma9iHPES-bIrZGwbQniuw&usqp=CAU'" class="is-rounded">
+                            </figure>
+                        </div>
+                    </div>
 
+                    <div id="breakdown" class="box">
+
+                    </div>
+                </div>
+
+                <p id="employeeName" class="title is-5">Approvato da: </p>
+            </div>
+        </div>
+    </script>
+
+
+    <script id="breakdown-template" type="text/x-handlebars-template">
+        <p id="productName" class="title is-5"></p>
+        <p class="title is-3 has-text-success"><i class="fas fa-money-bill-wave" style="color: rgb(39, 221, 79);"></i>&nbsp; {{price}} €</p>
+        <div>
+            {{#each instances}}
+            <div class="box">
+                <p id="instance-{{@key}}-name" class="title is-5">{{name}}</p>
+                {{#each dateRanges}}
+                <div class="columns is-centered">
+                    <div className="column is-one-third">
+                        <div class="box">
+                            {{from}} <i class="fas fa-arrow-right"></i> {{to}}
+                            <br>
+                            {{#if dateRangepricesBefore}}
+                            <p class="tag is-warning">SCONTI PERIODO</p>
+                            {{/if}}
+                            <ul>
+                            {{#each dateRangepricesBefore}}
+                                <li><span class="has-text-danger">{{lookup ../discountNames @index}} <span class="discounted">{{this}} €</span></span></li>
+                            {{/each}}
+                            </ul>
+                            <span class="has-text-success">{{dateRangeprice}} €</span>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+                <div>
+                    {{#if instancePricesBefore}}
+                    <p class="tag is-warning">SCONTI ISTANZA</p>
+                    <ul>
+                    {{#each instancePricesBefore}}
+                        <li><span class="has-text-danger">{{lookup ../discountNames @index}} <span
+                                    class="discounted">{{this}} €</span></span></li>
+                    {{/each}}
+                    </ul>
+                    <span class="has-text-success">{{instancePrice}} €</span>
+                    {{/if}}
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <br>
+        <div>
+            {{#if pricesBefore}}
+            <p class="tag is-warning">SCONTI PRODOTTO</p>
+            <ul>
+            {{#each pricesBefore}}
+                <li><p class="subtitle is-5 has-text-danger">{{lookup ../discountNames @index}} <span
+                            class="discounted">{{this}} €</span></p></li>
+            {{/each}}
+            </ul>
+            <p class="subtitle is-5 has-text-success">{{price}} €</p>
+            {{/if}}
+        </div>
+    </script>
 
 </footer>
 

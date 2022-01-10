@@ -17,6 +17,20 @@
     <script defer src="../../scripts/rentals/rental.js"></script>
 
     <title>Noleggio - Nolo Office</title>
+
+    <style>
+        .instance-discount {
+            color: #ffae00;
+        }
+
+        .discounted {
+            text-decoration: line-through;
+        }
+
+        .discount-text {
+            
+        }
+    </style>
 </head>
 
 <body>
@@ -72,18 +86,86 @@
             <div class="column is-half has-text-centered">
                 <div class="box">
                     <p id="rentedBy" class="title is-4">Noleggiato da: </p>
-                    <div class="box">
-                        <p class="title is-3"><i class="fas fa-money-bill-wave" style="color: rgb(39, 221, 79);"></i>&nbsp; {{profit}} €</p>
+                    <div class="columns is-centered">
+                        <div class="column is-half has-text-centered">
+                            <figure class="image container is-128x128">
+                                <img id="user-image" onerror="this.onerror=null; this.src='http://www.gravatar.com/avatar/ee194f150caf4ef175b36caaeb2f7782.jpg?s=48&d=mm'" class="is-rounded">
+                            </figure>
+                        </div>
+                        <div class="column is-half has-text-centered">
+                            <figure class="image container is-128x128">
+                                <img id="product-image" onerror="this.onerror=null; this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRx7ub_01iKN_RXyma9iHPES-bIrZGwbQniuw&usqp=CAU'" class="is-rounded">
+                            </figure>
+                        </div>
                     </div>
-                    <p id="productName" class="title is-5"></p>
-                    <p id="productDiscounts" class="subtitle is-6">sconti prodotto</p>
 
+                    <div id="breakdown" class="box">
+
+                    </div>
                 </div>
-                <p class="subtitle is-5">Sconti: {{discounts}}</p>
+
                 <p id="employeeName" class="title is-5">Approvato da: </p>
             </div>
         </div>
     </script> 
+
+
+    <script id="breakdown-template" type="text/x-handlebars-template">
+        <p id="productName" class="title is-5"></p>
+        <p class="title is-3 has-text-success"><i class="fas fa-money-bill-wave" style="color: rgb(39, 221, 79);"></i>&nbsp; {{price}} €</p>
+        <div>
+            {{#each instances}}
+            <div class="box">
+                <p id="instance-{{@key}}-name" class="title is-5">{{name}}</p>
+                {{#each dateRanges}}
+                <div class="columns is-centered">
+                    <div className="column is-one-third">
+                        <div class="box">
+                            {{from}} <i class="fas fa-arrow-right"></i> {{to}}
+                            <br>
+                            {{#if dateRangepricesBefore}}
+                            <p class="tag is-warning">SCONTI PERIODO</p>
+                            {{/if}}
+                            <ul>
+                            {{#each dateRangepricesBefore}}
+                                <li><span class="has-text-danger">{{lookup ../discountNames @index}} <span class="discounted">{{this}} €</span></span></li>
+                            {{/each}}
+                            </ul>
+                            <span class="has-text-success">{{dateRangeprice}} €</span>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+                <div>
+                    {{#if instancePricesBefore}}
+                    <p class="tag is-warning">SCONTI ISTANZA</p>
+                    <ul>
+                    {{#each instancePricesBefore}}
+                        <li><span class="has-text-danger">{{lookup ../discountNames @index}} <span
+                                    class="discounted">{{this}} €</span></span></li>
+                    {{/each}}
+                    </ul>
+                    <span class="has-text-success">{{instancePrice}} €</span>
+                    {{/if}}
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <br>
+        <div>
+            {{#if pricesBefore}}
+            <p class="tag is-warning">SCONTI PRODOTTO</p>
+            <ul>
+            {{#each pricesBefore}}
+                <li><p class="subtitle is-5 has-text-danger">{{lookup ../discountNames @index}} <span
+                            class="discounted">{{this}} €</span></p></li>
+            {{/each}}
+            </ul>
+            <p class="subtitle is-5 has-text-success">{{price}} €</p>
+            {{/if}}
+        </div>
+    </script>
+
 </footer>
 
 </html>

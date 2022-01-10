@@ -119,13 +119,12 @@ $(document).ready(function () {
                 "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
             },
             success: function (response) {
+                console.log(response);
+
                 quote = JSON.parse(JSON.stringify(response));
-                response["price"] = productPrice(response, true);
-                for (const [k, v] of Object.entries(response.instances)) {
-                    for (const [k2, v2] of Object.entries(v.dateRanges)) {
-                        v2["totalPrice"] = dateRangePrice(v2, true);
-                    }
-                }
+
+                augmentQuote(response);
+
                 let template = Handlebars.compile($("#breakdown-template").html());
                 $("#breakdown").html('<p class="title is-3">Quote breakdown</p>');
                 $("#breakdown").append(template(response));

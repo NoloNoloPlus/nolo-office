@@ -51,6 +51,10 @@
             width: 30px;
             height: 30px;
         }
+
+        .discounted {
+            text-decoration: line-through;
+        }
     </style>
 </head>
 
@@ -278,18 +282,47 @@
     </script>
     
     <script id="breakdown-template" type="text/x-handlebars-template">
-        <p class="title is-3">{{price}} €</p>
-        <ul>
+        <p class="title is-3 has-text-success">{{price}} €</p>
+        <div>
             {{#each instances}}
-            <li><strong>{{name}}</strong>
-                <ul>
-                    {{#each dateRanges}}
-                    <li>{{from}} <i class="fas fa-arrow-right"></i> {{to}}: {{totalPrice}} €</li>
+            <div class="box">
+                <p class="title is-5">{{name}}</p>
+                {{#each dateRanges}}
+                <div class="columns is-centered">
+                    <div className="column is-one-third">
+                        <div class="box">
+                            {{from}} <i class="fas fa-arrow-right"></i> {{to}}
+                            <ul>
+                            {{#each dateRangepricesBefore}}
+                                <li><span class="has-text-danger">{{lookup ../discountNames @index}} <span class="discounted">{{this}}€</span></span></li>
+                            {{/each}}
+                            </ul>
+                            <span class="has-text-success">{{dateRangeprice}}€</span>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+                <div>
+                    <ul>
+                    {{#each instancePricesBefore}}
+                        <li><span class="has-text-danger">{{lookup ../discountNames @index}} <span
+                                    class="discounted">{{this}}€</span></span></li>
                     {{/each}}
-                </ul>
-            </li>
+                    </ul>
+                    <span class="has-text-success">{{instancePrice}}€</span>
+                </div>
+            </div>
             {{/each}}
-        </ul>
+        </div>
+        <div>
+            <ul>
+            {{#each pricesBefore}}
+                <li><p class="subtitle is-5 has-text-danger">{{lookup ../discountNames @index}} <span
+                            class="discounted">{{this}}€</span></p></li>
+            {{/each}}
+            </ul>
+            <p class="subtitle is-5 has-text-success">{{price}}€</p>
+        </div>
         <br>
         <div class="container" style="display: flex; justify-content: center;">
             <div class="field has-addons">
@@ -386,7 +419,6 @@
                         &nbsp; &nbsp;
                         <span class='tag is-clickable is-light {{#ifEquals type "fixed"}} is-primary {{/ifEquals}}'>fixed</span>
                         <span class='tag is-clickable is-light {{#ifEquals type "percentage"}} is-primary {{/ifEquals}}'>percentage</span>
-                        <span class='tag is-clickable is-light {{#ifEquals type "containsWeekend"}} is-primary {{/ifEquals}}'>containsWeekend</span>
                     </div>
                 </div>
             </div>
@@ -420,7 +452,6 @@
                         &nbsp; &nbsp;
                         <span class="tag is-clickable is-light">fixed</span>
                         <span class="tag is-clickable is-light">percentage</span>
-                        <span class="tag is-clickable is-light">containsWeekend</span>
                     </div>
                 </div>
             </div>
@@ -456,7 +487,6 @@
                         &nbsp; &nbsp;
                         <span class='tag is-clickable is-light {{#ifEquals type "fixed"}} is-primary {{/ifEquals}}'>fixed</span>
                         <span class='tag is-clickable is-light {{#ifEquals type "percentage"}} is-primary {{/ifEquals}}'>percentage</span>
-                        <span class='tag is-clickable is-light {{#ifEquals type "containsWeekend"}} is-primary {{/ifEquals}}'>containsWeekend</span>
                     </div>
                 </div>
             </div>
@@ -490,7 +520,6 @@
                         &nbsp; &nbsp;
                         <span class="tag is-clickable is-light">fixed</span>
                         <span class="tag is-clickable is-light">percentage</span>
-                        <span class="tag is-clickable is-light">containsWeekend</span>
                     </div>
                 </div>
             </div>

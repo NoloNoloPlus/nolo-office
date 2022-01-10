@@ -22,7 +22,7 @@ $(document).ready(function () {
 
 
             quote = data.products[Object.keys(data.products)[0]];
-            
+
             augmentQuote(quote);
 
             console.log(data);
@@ -56,7 +56,7 @@ $(document).ready(function () {
                 }),
                 $.ajax({
                     url: "https://site202114.tw.cs.unibo.it/v1/users/" + data.approvedBy,
-                    type: "GET", 
+                    type: "GET",
                     headers: {
                         "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
                     },
@@ -96,5 +96,4 @@ $(document).ready(function () {
             }
         });
     });
-
 });

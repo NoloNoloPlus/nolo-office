@@ -97,20 +97,24 @@
                 <div class="card">
                     <header class="card-header">
                         <p class="card-header-title is-centered">
-                            {{id}}
+                            {{product}}
                         </p>
                     </header>
                     <br>
                     <p class="has-text-weight-semibold">
-                        By user: {{userId}}
+                        By user: <strong>{{userId}}</strong>
                         <br>
-                        Approved by: {{approvedBy}}
+                        Approved by: <strong>{{approvedBy}}</strong>
                         <br>
-                        {{#if closed}}
-                            <span class="tag is-success">closed</span>
+                        <br>
+                        {{#ifEquals status "ready"}}
+                            <span class="tag is-danger">ready</span>
+                        {{else}} {{#ifEquals status "active"}}
+                            <span class="tag is-warning">active</span>
                         {{else}}
-                            <span class="tag is-danger">open</span>
-                        {{/if}}
+                            <span class="tag is-success">closed</span>
+                        {{/ifEquals}}
+                        {{/ifEquals}}
                     </p>
                     <br>
                 </div>

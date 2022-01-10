@@ -1,6 +1,72 @@
+Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
+    return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+});
+
 $(document).ready(function() {
 
     var past = [], present = [], future = [];
+
+    function rentalsToRequests(rentals) {
+        var reqs = [];
+        for (const r of rentals) {
+
+            if (r.approvedBy == null || r.userId == null || r.userId == "61cc37bbcf15a80014ebde07") {
+                continue;
+            }
+
+            reqs.push(
+                $.ajax({
+                    url: 'https://site202114.tw.cs.unibo.it/v1/users/' + r.approvedBy,
+                    type: 'GET',
+                    headers: {
+                        "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
+                    },
+                    success: function (data) {
+                        r.approvedBy = data.firstName + " " + data.lastName;
+                    },
+                    error: function (data) {
+                        alert("Error: " + data.responseText);
+                        console.log("EMPLOYEE NOT FOUND");
+                    }
+                })
+            );
+
+            reqs.push(
+                $.ajax({
+                    url: 'https://site202114.tw.cs.unibo.it/v1/users/' + r.userId,
+                    type: 'GET',
+                    headers: {
+                        "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
+                    },
+                    success: function (data) {
+                        r.userId = data.firstName + " " + data.lastName;
+                    },
+                    error: function (data) {
+                        alert("Error: " + data.responseText);
+                        console.log("UTENTE NON TROVATO " + r.userId);
+                    }
+                })        
+            )
+
+            reqs.push(
+                $.ajax({
+                    url: 'https://site202114.tw.cs.unibo.it/v1/products/' + Object.keys(r.products)[0],
+                    type: 'GET',
+                    headers: {
+                        "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
+                    },
+                    success: function (data) {
+                        r.product = data.name;
+                    },
+                    error: function (data) {
+                        alert("Error: " + data.responseText);
+                        console.log("OGGETTO");
+                    }
+                })
+            )
+        }
+        return reqs;
+    }
 
     $.ajax({
         url: 'https://site202114.tw.cs.unibo.it/v1/rentals',
@@ -12,12 +78,9 @@ $(document).ready(function() {
         },
         success: function(data) {
             console.log(data);
-            $(".pageloader").removeClass("is-active");
 
 
-            for(r of data.results) {
-                
-
+            for (r of data.results) {
                 let [startDate, endDate] = findBoundaries(r);
                 
                 if (endDate < new Date()) {
@@ -28,15 +91,42 @@ $(document).ready(function() {
                     present.push(r);
                 }
             }
-            console.log(past);
-            let templatePast = Handlebars.compile($("#rentals-template").html());
-            $("#past-rentals").append(templatePast(past));
 
-            let templatePresent = Handlebars.compile($("#rentals-template").html());
-            $("#present-rentals").append(templatePresent(present));
+            var requests = [];
+            requests = requests.concat(rentalsToRequests(past));
+            requests = requests.concat(rentalsToRequests(present));
+            requests = requests.concat(rentalsToRequests(future));
 
-            let templateFuture = Handlebars.compile($("#rentals-template").html());
-            $("#future-rentals").append(templateFuture(future));
+
+            $.when.apply(undefined, requests).done(function() {
+                console.log(past);
+                console.log(present);
+                console.log(future);
+
+                past = past.filter(function(r) {
+                    return r.approvedBy != null && r.userId != null && r.userId != "61cc37bbcf15a80014ebde07";
+                });
+
+                present = present.filter(function(r) {
+                    return r.approvedBy != null && r.userId != null && r.userId != "61cc37bbcf15a80014ebde07";
+                });
+
+                future = future.filter(function(r) {
+                    return r.approvedBy != null && r.userId != null && r.userId != "61cc37bbcf15a80014ebde07";
+                });
+
+                let templatePast = Handlebars.compile($("#rentals-template").html());
+                $("#past-rentals").append(templatePast(past));
+
+                let templatePresent = Handlebars.compile($("#rentals-template").html());
+                $("#present-rentals").append(templatePresent(present));
+
+                let templateFuture = Handlebars.compile($("#rentals-template").html());
+                $("#future-rentals").append(templateFuture(future));
+
+                $(".pageloader").removeClass("is-active");
+
+            }); 
         }
     })
 
@@ -50,14 +140,6 @@ $(document).ready(function() {
         $("#" + activeTab + "-rentals").show();
     });
 
-    Handlebars.registerHelper('filter', function (list, k, v, opts) {
-        console.log(Object.keys(list[0].products));
-        var i, result = '';
-        for (i = 0; i < list.length; ++i)
-            if (list[i][k] == v)
-                result = result + opts.fn(list[i]);
-        return result;
-    });
 
     $("#searchbar").on("keyup", function () {
         let value = $(this).val().toLowerCase();

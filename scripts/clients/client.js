@@ -84,7 +84,7 @@ $(document).ready(function () {
                 data[i]["startDate"] = startDate.toISOString().split("T")[0];
                 data[i]["endDate"] = endDate.toISOString().split("T")[0];
 
-                data[i]["price"] = rentalPrice(data[i], true);
+                data[i]["price"] = rentalPrice(data[i], false).toFixed(2);
             }
             console.log(data);
             let templateRentals = Handlebars.compile($("#client-rentals-template").html());

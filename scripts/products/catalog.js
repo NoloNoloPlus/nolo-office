@@ -1,16 +1,5 @@
 $(document).ready(function () {
 
-    // Helper function to convert rating into stars
-    $.fn.stars = function () {
-        return $(this).each(function () {
-            const rating = $(this).attr("rating");
-            const fullStar = '<i class="fas fa-star"></i>'.repeat(Math.floor(rating));
-            const halfStar = (rating % 1 !== 0) ? '<i class="fas fa-star-half-alt"></i>' : '';
-            const noStar = '<i class="far fa-star"></i>'.repeat(Math.floor(5 - rating));
-            $(this).html(fullStar + halfStar + noStar);
-        });
-    }
-
     $.ajax({
         url: "https://site202114.tw.cs.unibo.it/v1/products/",
         headers: {
@@ -20,9 +9,6 @@ $(document).ready(function () {
         success: function (data) {
             var template = Handlebars.compile($("#product-card-template").html());
             $(".section").append(template(data));
-            $(function () {
-                $('.stars').stars();
-            });
             $('.pageloader').removeClass('is-active');
         }
     });
@@ -30,18 +16,6 @@ $(document).ready(function () {
 
 
     // Add new object modal  
-
-    // Star rating on modal
-    var starRatingStep = raterJs({
-        starSize: 32,
-        step: 0.5,
-        element: document.querySelector("#rater"),
-        rateCallback: function rateCallback(rating, done) {
-            this.setRating(rating);
-            done();
-            $('button[type="submit"]').focus();
-        }
-    });
 
     // Activate modal
     $("#add-object").click(function () {
@@ -56,7 +30,6 @@ $(document).ready(function () {
         $("#add-object-form").trigger("reset");
         $("#images-upload").empty();
         $("#images-upload").parent().removeClass("is-success");
-        starRatingStep.setRating(0);
     }
 
     // Close modal
