@@ -30,11 +30,11 @@ function isLoggedIn() {
 if (!isLoggedIn()) {
     localStorage.removeItem("tokens");
     localStorage.setItem("redirect", window.location.href);
-    window.location.href = window.location.href.replace(new RegExp("/pages/.*"), "/pages/login.html");
+    window.location.href = window.location.href.replace(new RegExp("/back/.*"), "/back/login.html");
 }
 
 // Logout button
 $("#logout-button").click(function () {
     localStorage.removeItem("tokens");
-    window.location.href = window.location.href.replace(new RegExp("/pages/.*"), "/pages/login.html");
+    window.location.href = window.location.href.replace(new RegExp("/back/.*"), "/back/login.html");
 });
