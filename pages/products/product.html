@@ -292,36 +292,42 @@
                     <div className="column is-one-third">
                         <div class="box">
                             {{from}} <i class="fas fa-arrow-right"></i> {{to}}
+                            {{#if dateRangepricesBefore}}
                             <ul>
                             {{#each dateRangepricesBefore}}
                                 <li><span class="has-text-danger">{{lookup ../discountNames @index}} <span class="discounted">{{this}}€</span></span></li>
                             {{/each}}
                             </ul>
-                            <span class="has-text-success">{{dateRangeprice}}€</span>
+                            <span class="has-text-success">{{dateRangeprice}} €</span>
+                            {{/if}}
                         </div>
                     </div>
                 </div>
                 {{/each}}
                 <div>
+                    {{#if instancePricesBefore}}
                     <ul>
                     {{#each instancePricesBefore}}
                         <li><span class="has-text-danger">{{lookup ../discountNames @index}} <span
                                     class="discounted">{{this}}€</span></span></li>
                     {{/each}}
                     </ul>
-                    <span class="has-text-success">{{instancePrice}}€</span>
+                    <span class="has-text-success">{{instancePrice}} €</span>
+                    {{/if}}
                 </div>
             </div>
             {{/each}}
         </div>
         <div>
+            {{#if pricesBefore}}
             <ul>
             {{#each pricesBefore}}
                 <li><p class="subtitle is-5 has-text-danger">{{lookup ../discountNames @index}} <span
                             class="discounted">{{this}}€</span></p></li>
             {{/each}}
             </ul>
-            <p class="subtitle is-5 has-text-success">{{price}}€</p>
+            <p class="subtitle is-5 has-text-success">{{price}} €</p>
+            {{/if}}
         </div>
         <br>
         <div class="container" style="display: flex; justify-content: center;">

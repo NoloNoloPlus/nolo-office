@@ -174,7 +174,25 @@ $(document).ready(function () {
                         [id]: quote,
                     };
                     data.discounts = [];
-                    data.status = "ready";
+                    
+                    let from = new Date($("#bulma-calendar")[0].bulmaCalendar.startDate);
+                    let to = new Date($("#bulma-calendar")[0].bulmaCalendar.endDate);
+                    let today = new Date();
+
+                    from.setHours(0, 0, 0, 0);
+                    to.setHours(23, 59, 59, 999);
+                    today.setHours(0, 0, 0, 0);
+
+                    if (from <= today) {
+                        if (to < today) {
+                            data.status = "closed";
+                        } else {
+                            data.status = "active";
+                        }
+                    } else {
+                        data.status = "ready";
+                    }    
+
                     data.userId = user.id;
                     for (const [k, v] of Object.entries(data.products)) {
                         for (const [k2, v2] of Object.entries(v.instances)) {
@@ -286,7 +304,7 @@ $(document).ready(function () {
         resetModal();
     });
 
-    // TODO - add instance
+    // Add instance
     $("#add-instance").click(function () {
         $("#edit-instance-modal").addClass("is-active");
         $(".modal-card-title").html("Aggiungi istanza");
@@ -295,6 +313,26 @@ $(document).ready(function () {
             modalId = "id" + Math.random().toString(16).slice(3);
         }
         $(".modal").attr("modalId", modalId);
+    });
+
+    $(document).on('click', "#remove-instance", function (e) {
+        console.log(product);
+        delete product.instances[$(e.target).attr("instanceid")];
+        
+        $.ajax({
+            url: "https://site202114.tw.cs.unibo.it/v1/products/" + id,
+            type: "PUT",
+            data: product,
+            headers: {
+                "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
+            },
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function (data) {
+                alert("Something went wrong: " + data.responseText);
+            }
+        })
     });
 
     // Submit instance changes

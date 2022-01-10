@@ -67,18 +67,13 @@
     </nav>
     <section class="section">
         <div class="pageloader is-active"><span class="title">Loading</span></div>
-        
-    </section>
-</body>
-<footer>
-    <script id="rental-template" type="text/x-handlebars-template">
         <div class="columns is-centered">
             <div class="column is-half has-text-centered">
-                <p class="title is-5">ID: {{id}}</p>
+                <p id="id" class="title is-5">ID: </p>
                 <p class="subtitle is-6">Status:
-                <span class="tag is-clickable is-light">ready</span>
-                <span class="tag is-clickable is-light">active</span>
-                <span class="tag is-clickable is-light">closed</span>
+                    <span class="tag is-clickable is-light">ready</span>
+                    <span class="tag is-clickable is-light">active</span>
+                    <span class="tag is-clickable is-light">closed</span>
                 </p>
             </div>
         </div>
@@ -89,27 +84,31 @@
                     <div class="columns is-centered">
                         <div class="column is-half has-text-centered">
                             <figure class="image container is-128x128">
-                                <img id="user-image" onerror="this.onerror=null; this.src='http://www.gravatar.com/avatar/ee194f150caf4ef175b36caaeb2f7782.jpg?s=48&d=mm'" class="is-rounded">
+                                <img id="user-image"
+                                    onerror="this.onerror=null; this.src='http://www.gravatar.com/avatar/ee194f150caf4ef175b36caaeb2f7782.jpg?s=48&d=mm'"
+                                    class="is-rounded">
                             </figure>
                         </div>
                         <div class="column is-half has-text-centered">
                             <figure class="image container is-128x128">
-                                <img id="product-image" onerror="this.onerror=null; this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRx7ub_01iKN_RXyma9iHPES-bIrZGwbQniuw&usqp=CAU'" class="is-rounded">
+                                <img id="product-image"
+                                    onerror="this.onerror=null; this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRx7ub_01iKN_RXyma9iHPES-bIrZGwbQniuw&usqp=CAU'"
+                                    class="is-rounded">
                             </figure>
                         </div>
                     </div>
-
+        
                     <div id="breakdown" class="box">
-
+        
                     </div>
                 </div>
-
+        
                 <p id="employeeName" class="title is-5">Approvato da: </p>
             </div>
         </div>
-    </script> 
-
-
+    </section>
+</body>
+<footer>
     <script id="breakdown-template" type="text/x-handlebars-template">
         <p id="productName" class="title is-5"></p>
         <p class="title is-3 has-text-success"><i class="fas fa-money-bill-wave" style="color: rgb(39, 221, 79);"></i>&nbsp; {{price}} €</p>

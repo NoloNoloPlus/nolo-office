@@ -6,15 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bulma-calendar@6.1.15/dist/css/bulma-calendar.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css"
         integrity="sha256-xi0ce0gpVJ9pzkRRuhwspstPyKA0BXGRnyJcfMiYwpE=" crossorigin="anonymous">
     <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bulma-calendar@6.1.15/dist/js/bulma-calendar.min.js"></script>
     <script defer src="../../scripts/boundaries.js"></script>
     <script defer src="../../scripts/price.js"></script>
     <script defer src="../../scripts/utils.js"></script>
-    <script defer src="../../scripts/rentals/rental.js"></script>
+    <script defer src="../../scripts/rentals/futurerental.js"></script>
 
     <title>Noleggio - Nolo Office</title>
 
@@ -65,14 +67,9 @@
     </nav>
     <section class="section">
         <div class="pageloader is-active"><span class="title">Loading</span></div>
-
-    </section>
-</body>
-<footer>
-    <script id="rental-template" type="text/x-handlebars-template">
         <div class="columns is-centered">
             <div class="column is-half has-text-centered">
-                <p class="title is-5">ID: {{id}}</p>
+                <p id="id" class="title is-5">ID: </p>
                 <p class="subtitle is-6">Status:
                 <span class="tag is-clickable is-light">ready</span>
                 <span class="tag is-clickable is-light">active</span>
@@ -103,11 +100,37 @@
                 </div>
 
                 <p id="employeeName" class="title is-5">Approvato da: </p>
+                
+                <div class="buttons are-medium is-centered">                    
+                    <button id="edit-rental" class="button is-info">Modifica</button>
+                    <button id="delete-rental" class="button is-danger">Rimuovi</button>
+                </div>
             </div>
         </div>
-    </script>
 
+        <div id="editing" class="columns is-centered" style="display: none;">
+            <div class="column is-half has-text-centered">
+                <div class="box">
+                    <div class="is-inline-block">
+                        <input type="date" id="bulma-calendar">
+                    </div>
+                    <br> <br>
+                    <div class="buttons is-centered">
+                        <button id="cancel-editing" class="button is-light">Cancella</button>
+                        <button id="get-new-quote" class="button is-success">Preventivo</button>
+                    </div>
+                    <div id="error" class="help is-danger"></div>
+                </div>
+            </div>
+            <div id="right-column" class="column is-half has-text-centered" style="display: none;">
+                <div id="new-breakdown" class="box">
 
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<footer>
     <script id="breakdown-template" type="text/x-handlebars-template">
         <p id="productName" class="title is-5"></p>
         <p class="title is-3 has-text-success"><i class="fas fa-money-bill-wave" style="color: rgb(39, 221, 79);"></i>&nbsp; {{price}} €</p>
@@ -161,6 +184,60 @@
             </ul>
             <p class="subtitle is-5 has-text-success">{{price}} €</p>
             {{/if}}
+        </div>
+    </script>
+
+    <script id="new-breakdown-template" type="text/x-handlebars-template">
+        <p class="title is-3 has-text-success">{{price}} €</p>
+        <div>
+            {{#each instances}}
+            <div class="box">
+                <p class="title is-5">{{name}}</p>
+                {{#each dateRanges}}
+                <div class="columns is-centered">
+                    <div className="column is-one-third">
+                        <div class="box">
+                            {{from}} <i class="fas fa-arrow-right"></i> {{to}}
+                            {{#if dateRangepricesBefore}}
+                            <ul>
+                            {{#each dateRangepricesBefore}}
+                                <li><span class="has-text-danger">{{lookup ../discountNames @index}} <span class="discounted">{{this}}€</span></span></li>
+                            {{/each}}
+                            </ul>
+                            <span class="has-text-success">{{dateRangeprice}} €</span>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+                <div>
+                    {{#if instancePricesBefore}}
+                    <ul>
+                    {{#each instancePricesBefore}}
+                        <li><span class="has-text-danger">{{lookup ../discountNames @index}} <span
+                                    class="discounted">{{this}}€</span></span></li>
+                    {{/each}}
+                    </ul>
+                    <span class="has-text-success">{{instancePrice}} €</span>
+                    {{/if}}
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <div>
+            {{#if pricesBefore}}
+            <ul>
+            {{#each pricesBefore}}
+                <li><p class="subtitle is-5 has-text-danger">{{lookup ../discountNames @index}} <span
+                            class="discounted">{{this}}€</span></p></li>
+            {{/each}}
+            </ul>
+            <p class="subtitle is-5 has-text-success">{{price}} €</p>
+            {{/if}}
+        </div>
+        <br>
+        <div class="buttons is-centered">
+            <button id="confirm-quote" class="button is-success">Conferma</button>
         </div>
     </script>
 

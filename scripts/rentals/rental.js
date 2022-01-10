@@ -26,8 +26,9 @@ $(document).ready(function () {
             augmentQuote(quote);
 
             console.log(data);
-            var template = Handlebars.compile($("#rental-template").html());
-            $("section").append(template(data));
+            
+            $("#id").append(id);
+
             $(".tag:contains('" + data.status + "')").addClass("is-primary");
 
             var templateBreakdown = Handlebars.compile($("#breakdown-template").html());
