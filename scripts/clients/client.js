@@ -116,7 +116,7 @@ $(document).ready(function () {
         $("#update-client-pending").hide();
         $("#cancel-update").hide();
         $("#update-client").show();
-        $("input[readonly]").attr('readonly', 'readonly');
+        $("input").attr('readonly', 'readonly');
     }
 
     $("#update-client").click(function () {
