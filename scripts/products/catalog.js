@@ -98,4 +98,16 @@ $(document).ready(function () {
         e.preventDefault();
         $("#otherImagesList").append('<div class="control"><input id="object-otherImages" name="otherImages" class="input" type="text" placeholder=""></div>');
     });
+
+
+    // Logout check
+    if (localStorage.getItem("tokens") == null) {
+        $("#logout-button").hide();
+    }
+
+    // Logout
+    $("#logout-button").click(function () {
+        localStorage.removeItem("tokens");
+        window.location.href = window.location.href.replace(new RegExp("/pages/.*"), "/pages/login.html");
+    });
 });

@@ -32,3 +32,9 @@ if (!isLoggedIn()) {
     localStorage.setItem("redirect", window.location.href);
     window.location.href = window.location.href.replace(new RegExp("/pages/.*"), "/pages/login.html");
 }
+
+// Logout button
+$("#logout-button").click(function () {
+    localStorage.removeItem("tokens");
+    window.location.href = window.location.href.replace(new RegExp("/pages/.*"), "/pages/login.html");
+});
