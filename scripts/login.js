@@ -38,7 +38,6 @@ $(document).ready(function () {
                 if(response.status == 401) {
                     showError("Invalid credentials");
                 } else {
-                    alert("Something went wrong: " + data.statusText);
                     setTimeout(() => { window.location.reload() }, 3000);
                 }
             }

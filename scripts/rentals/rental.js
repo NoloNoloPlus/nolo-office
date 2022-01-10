@@ -84,7 +84,7 @@ $(document).ready(function () {
             });
         },
         error: function (data) {
-            alert("Something went wrong: " + data.statusText);
+            console.log("Something went wrong: " + data.statusText);
         }
     });
 
@@ -107,7 +107,7 @@ $(document).ready(function () {
                 console.log(data);
             },
             error: function (data) {
-                alert("Something went wrong: " + data.responseText);
+                console.log("Something went wrong: " + data.responseText);
             }
         });
     });
@@ -130,7 +130,7 @@ $(document).ready(function () {
                 window.location.reload();
             },
             error: function (data) {
-                alert("Something went wrong: " + data.responseText);
+                console.log("Something went wrong: " + data.responseText);
             }
         });
     });

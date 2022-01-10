@@ -22,7 +22,7 @@ $(document).ready(function() {
                             r.approvedBy = data.firstName + " " + data.lastName;
                         },
                         error: function (data) {
-                            //alert("Error: " + data.responseText);
+                            console.log("Error: " + data.responseText);
                         }
                     })
                 );
@@ -39,7 +39,7 @@ $(document).ready(function() {
                         r.userId = data.firstName + " " + data.lastName;
                     },
                     error: function (data) {
-                        alert("Error: " + data.responseText);
+                        console.log("Error: " + data.responseText);
                     }
                 })        
             )
@@ -55,7 +55,7 @@ $(document).ready(function() {
                         r.product = data.name;
                     },
                     error: function (data) {
-                        alert("Error: " + data.responseText);
+                        console.log("Error: " + data.responseText);
                     }
                 })
             )

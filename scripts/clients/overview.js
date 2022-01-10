@@ -16,7 +16,7 @@ $(document).ready(function () {
             $('.pageloader').removeClass('is-active');
         },
         error: function (data) {
-            alert("Something went wrong: " + data.statusText);
+            console.log("Something went wrong: " + data.statusText);
         }
     });
 

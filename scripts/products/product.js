@@ -60,7 +60,7 @@ $(document).ready(function () {
             $("#product-discounts").append(templateDiscount(data.discounts));
         },
         error: function (data) {
-            alert("Something went wrong: " + data.statusText);
+            console.log("Something went wrong: " + data.statusText);
         }
     }).then(function () {
         $.ajax({
@@ -88,7 +88,7 @@ $(document).ready(function () {
                 $('.pageloader').removeClass('is-active');
             },
             error: function (data) {
-                alert("Something went wrong: " + data.statusText);
+                console.log("Something went wrong: " + data.statusText);
             }
         })
     });
@@ -146,7 +146,7 @@ $(document).ready(function () {
                 window.location.href = "./catalog.html";
             },
             error: function (data) {
-                alert("Something went wrong: " + data.statusText);
+                console.log("Something went wrong: " + data.statusText);
             }
         });
     });
@@ -216,7 +216,7 @@ $(document).ready(function () {
                     window.location.reload();
                 },
                 error: function (data) {
-                    alert("Error: " + data.responseText);
+                    console.log("Error: " + data.responseText);
                 }
             });
         }
@@ -284,7 +284,7 @@ $(document).ready(function () {
                             }, 3000);
                         },
                         error: function (data) {
-                            alert("Something went wrong: " + data.responseText);
+                            console.log("Something went wrong: " + data.responseText);
                         }
                     })
                 }
@@ -395,7 +395,7 @@ $(document).ready(function () {
                 window.location.reload();
             },
             error: function (data) {
-                alert("Something went wrong: " + data.responseText);
+                console.log("Something went wrong: " + data.responseText);
             }
         })
     });
@@ -474,7 +474,7 @@ $(document).ready(function () {
                     window.location.reload();
                 },
                 error: function (data) {
-                    alert("Something went wrong: " + data.responseText);
+                    console.log("Something went wrong: " + data.responseText);
                 }
             })
         } else {
@@ -516,7 +516,7 @@ $(document).ready(function () {
                     }, 3000);
                 },
                 error: function (data) {
-                    alert("Something went wrong: " + data.responseText);
+                    console.log("Something went wrong: " + data.responseText);
                 }
             })
         }

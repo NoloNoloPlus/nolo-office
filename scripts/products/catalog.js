@@ -79,7 +79,7 @@ $(document).ready(function () {
                     window.location.reload();
                 },
                 error: function (data) {
-                    alert("Error: " + data.responseText);
+                    console.log("Error: " + data.responseText);
                 }
             });
         }  

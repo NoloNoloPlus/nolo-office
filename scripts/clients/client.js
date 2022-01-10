@@ -57,7 +57,7 @@ $(document).ready(function () {
             
         },
         error: function (data) {
-            alert("Something went wrong: " + data.statusText);
+            console.log("Error: " + data.responseText);
         }
     });
 
@@ -199,7 +199,7 @@ $(document).ready(function () {
                 window.location.href = "./overview.html";
             },
             error: function (data) {
-                alert("Something went wrong: " + data.statusText);
+                console.log("Something went wrong: " + data.statusText);
             }
         })
     });
