@@ -20,7 +20,7 @@ $(document).ready(function () {
         }
     });
 
-    $("table").on('click', 'tr', function () {
+    $("table").on('click', 'tbody tr', function () {
         let id = $(this).find("#client-id").html();
         window.location.href = "client.html?id=" + id;
     });
