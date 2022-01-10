@@ -10,26 +10,23 @@ $(document).ready(function() {
         var reqs = [];
         for (const r of rentals) {
 
-            if (r.approvedBy == null || r.userId == null || r.userId == "61cc37bbcf15a80014ebde07") {
-                continue;
+            if (r.approvedBy) {
+                reqs.push(
+                    $.ajax({
+                        url: 'https://site202114.tw.cs.unibo.it/v1/users/' + r.approvedBy,
+                        type: 'GET',
+                        headers: {
+                            "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
+                        },
+                        success: function (data) {
+                            r.approvedBy = data.firstName + " " + data.lastName;
+                        },
+                        error: function (data) {
+                            //alert("Error: " + data.responseText);
+                        }
+                    })
+                );
             }
-
-            reqs.push(
-                $.ajax({
-                    url: 'https://site202114.tw.cs.unibo.it/v1/users/' + r.approvedBy,
-                    type: 'GET',
-                    headers: {
-                        "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
-                    },
-                    success: function (data) {
-                        r.approvedBy = data.firstName + " " + data.lastName;
-                    },
-                    error: function (data) {
-                        alert("Error: " + data.responseText);
-                        console.log("EMPLOYEE NOT FOUND");
-                    }
-                })
-            );
 
             reqs.push(
                 $.ajax({
@@ -43,7 +40,6 @@ $(document).ready(function() {
                     },
                     error: function (data) {
                         alert("Error: " + data.responseText);
-                        console.log("UTENTE NON TROVATO " + r.userId);
                     }
                 })        
             )
@@ -60,7 +56,6 @@ $(document).ready(function() {
                     },
                     error: function (data) {
                         alert("Error: " + data.responseText);
-                        console.log("OGGETTO");
                     }
                 })
             )
@@ -77,8 +72,6 @@ $(document).ready(function() {
             "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
         },
         success: function(data) {
-            console.log(data);
-
 
             for (r of data.results) {
                 let [startDate, endDate] = findBoundaries(r);
@@ -99,21 +92,18 @@ $(document).ready(function() {
 
 
             $.when.apply(undefined, requests).done(function() {
-                console.log(past);
-                console.log(present);
-                console.log(future);
 
-                past = past.filter(function(r) {
-                    return r.approvedBy != null && r.userId != null && r.userId != "61cc37bbcf15a80014ebde07";
-                });
+                // past = past.filter(function(r) {
+                //     return r.userId != null && r.userId != "61cc37bbcf15a80014ebde07";
+                // });
 
-                present = present.filter(function(r) {
-                    return r.approvedBy != null && r.userId != null && r.userId != "61cc37bbcf15a80014ebde07";
-                });
+                // present = present.filter(function(r) {
+                //     return r.userId != null && r.userId != "61cc37bbcf15a80014ebde07";
+                // });
 
-                future = future.filter(function(r) {
-                    return r.approvedBy != null && r.userId != null && r.userId != "61cc37bbcf15a80014ebde07";
-                });
+                // future = future.filter(function(r) {
+                //     return r.userId != null && r.userId != "61cc37bbcf15a80014ebde07";
+                // });
 
                 let templatePast = Handlebars.compile($("#rentals-template").html());
                 $("#past-rentals").append(templatePast(past));

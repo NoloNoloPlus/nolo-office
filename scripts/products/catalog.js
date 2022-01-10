@@ -48,7 +48,6 @@ $(document).ready(function () {
     // Convert from serialized form to JSON
     $('button[type="submit"]').click(function (e) {
         var inputData = $("#add-object-form").serializeArray();
-        console.log(inputData);
 
         var data = {
             otherImages: []
@@ -63,8 +62,8 @@ $(document).ready(function () {
             }
         });
         
-        if (data.name == "" || data.coverImage == "") {
-            alert("Fields Name and Cover Image are required");
+        if (data.name == "" || data.coverImage == "" || data.description == "" || data.price == "" || data.category == "" || data.quantity == "") {
+            alert("Fields Name, Description Cover Image are required");
             e.preventDefault();
             return;
         } else {
@@ -76,7 +75,6 @@ $(document).ready(function () {
                     "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
                 },
                 success: function (data) {
-                    console.log(data);
                     resetModal();
                     window.location.reload();
                 },

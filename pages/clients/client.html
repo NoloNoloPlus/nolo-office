@@ -22,14 +22,8 @@
 <body>
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a class="navbar-item" href="">
+            <a class="navbar-item" href="../index.html">
                 <img src="../../images/NologoExtended.png" height="112" alt="logo">
-            </a>
-
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
             </a>
         </div>
 
@@ -172,7 +166,7 @@
         <thead>
             <tr>
                 <th>ID noleggio</th>
-                <th>ID prodotto</th>
+                <th>Prodotto</th>
                 <th>Da</th>
                 <th>A</th>
                 <th>Prezzo</th>
@@ -182,7 +176,7 @@
         {{#each this}}
             <tr class="is-clickable">
                 <td id="rental-id">{{id}}</td>
-                <td>{{productId}}</td>
+                <td>{{productName}}</td>
                 <td>{{startDate}}</td>
                 <td>{{endDate}}</td>
                 <td>{{price}}</td>

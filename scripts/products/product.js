@@ -23,12 +23,12 @@ $(document).ready(function () {
             "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
         },
         success: function (data) {
-
-            console.log(data);
-
             product = JSON.parse(JSON.stringify(data));
             delete product.id;
             instances = data.instances;
+
+            console.log(product);
+
 
             let templateCarousel = Handlebars.compile($("#carousel-images").html());
             $("#carousel").append(templateCarousel(data));
@@ -70,7 +70,6 @@ $(document).ready(function () {
                 "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
             },
             success: function (data) {
-                console.log(data);
 
                 let templateInstances = Handlebars.compile($("#product-instances-template").html());
                 $(templateInstances(instances)).insertAfter("#instances-title");
@@ -79,7 +78,6 @@ $(document).ready(function () {
                     for (const [k, v] of Object.entries(r.products)) {
                         if (k == id) {
                             $("#remove-product").hide();
-                            console.log(v);
                             for (const [k2, v2] of Object.entries(v.instances)) {
                                 $("#remove-instance[instanceid=" + k2 + "]").hide();
                             }
@@ -119,7 +117,6 @@ $(document).ready(function () {
                 "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
             },
             success: function (response) {
-                console.log(response);
 
                 quote = JSON.parse(JSON.stringify(response));
 
@@ -154,6 +151,76 @@ $(document).ready(function () {
         });
     });
 
+    // Edit product
+    $("#edit-object").click(function () {
+        $("#edit-object-modal").addClass("is-active");
+        $(".modal-card-title").html("Modifica prodotto");
+
+        $("#object-name").val(product.name);
+        $("#object-description").val(product.description);
+        $("#object-coverImage").val(product.coverImage);
+
+        $("#otherImagesList div").html("");
+        for (const image of product.otherImages) {
+            $("#otherImagesList").append('<div class="control"><input id="object-otherImages" name="otherImages" class="input" type="text" value="' + image + '" placeholder=""></div>');
+        }
+    })
+
+    // Add image field
+    $("#plus-image").click(function (e) {
+        e.preventDefault();
+        $("#otherImagesList").append('<div class="control"><input id="object-otherImages" name="otherImages" class="input" type="text" placeholder=""></div>');
+    });
+
+    // Remove image field
+    $("#minus-image").click(function (e) {
+        e.preventDefault();
+        $("#otherImagesList div:last-child").remove();
+    });
+
+
+    // Submit edit object
+    $("#edit-object-submit").click(function (e) {
+        var inputData = $("#edit-object-form").serializeArray();
+
+        var data = JSON.parse(JSON.stringify(product));
+        data.name = "";
+        data.description = "";
+        data.coverImage = "";
+        data.otherImages = [];
+
+        $.each(inputData, function () {
+            if (this.name == 'otherImages') {
+                if (this.value != "") {
+                    data[this.name].push(this.value);
+                }
+            } else {
+                data[this.name] = this.value;
+            }
+        });
+
+        if (data.name == "" || data.coverImage == "" || data.description == "") {
+            alert("Fields Name, Description and Cover Image are required");
+            e.preventDefault();
+            return;
+        } else {
+            $.ajax({
+                url: "https://site202114.tw.cs.unibo.it/v1/products/" + id,
+                type: "PUT",
+                data: data,
+                headers: {
+                    "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
+                },
+                success: function (data) {
+                    resetModal();
+                    window.location.reload();
+                },
+                error: function (data) {
+                    alert("Error: " + data.responseText);
+                }
+            });
+        }
+    });  
 
     $(document).on("click", "#confirm-quote-button", function () {
         $.ajax({
@@ -237,7 +304,7 @@ $(document).ready(function () {
     $(document).on("click", "#edit-instance", function () {
         $("#edit-instance-modal").addClass("is-active");
         $(".modal-card-title").html("Modifica istanza");
-        $(".modal").attr("modalId", $(this).attr("instanceid"));
+        $("#edit-instance-modal").attr("modalId", $(this).attr("instanceid"));
 
         let inst = instances[$(this).attr("instanceid")];
         $("#statusfield > span:contains(" + inst.currentStatus + ")").addClass("is-primary");
@@ -251,7 +318,6 @@ $(document).ready(function () {
         let templateInstDiscounts = Handlebars.compile($("#instance-discounts-template").html());
         $("#instance-discounts").html(templateInstDiscounts(inst.discounts));
 
-        console.log(inst);
     });
 
 
@@ -293,14 +359,14 @@ $(document).ready(function () {
     });
 
     function resetModal() {
-        $("#edit-instance-modal").removeClass("is-active");
-        $("#edit-instance-form").trigger("reset");
+        $(".modal").removeClass("is-active");
+        $(".modal").trigger("reset");
         $("#statusfield > span").removeClass("is-primary");
         $("#dateranges").html("");
     }
 
     // Close modal
-    $("#edit-instance-modal-close, #edit-instance-modal-cancel, .modal-background").click(function () {
+    $("#edit-instance-modal-close, #edit-instance-modal-cancel, #edit-object-modal-close, #edit-object-modal-cancel, .modal-background").click(function () {
         resetModal();
     });
 
@@ -312,11 +378,10 @@ $(document).ready(function () {
         while (instances[modalId] != undefined) {
             modalId = "id" + Math.random().toString(16).slice(3);
         }
-        $(".modal").attr("modalId", modalId);
+        $("#edit-instance-modal").attr("modalId", modalId);
     });
 
     $(document).on('click', "#remove-instance", function (e) {
-        console.log(product);
         delete product.instances[$(e.target).attr("instanceid")];
         
         $.ajax({
@@ -386,7 +451,6 @@ $(document).ready(function () {
             d.description = $(this).find("#description").val();
             d.type = $(this).find(".tag.is-primary").html();
             d.value = $(this).find("#value").val();
-            console.log(d);
             if (d.name == "" || d.description == "" || d.value == "" || d.type == undefined) {
                 valid = false;
                 return false;
@@ -397,8 +461,7 @@ $(document).ready(function () {
         if (valid) {
             newIstance.availability = availabilities;
             newIstance.discounts = discounts;
-            product.instances[$(".modal").attr("modalId")] = newIstance;
-            console.log(product);
+            product.instances[$("#edit-instance-modal").attr("modalId")] = newIstance;
             $.ajax({
                 url: "https://site202114.tw.cs.unibo.it/v1/products/" + id,
                 type: "PUT",

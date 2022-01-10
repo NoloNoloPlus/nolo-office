@@ -13,7 +13,6 @@
     <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <script defer src="../../node_modules/rater-js/index.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/js/bulma-carousel.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/bulma-calendar@6.1.15/dist/js/bulma-calendar.min.js"></script>
     
@@ -61,14 +60,8 @@
 <body>
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a class="navbar-item" href="">
+            <a class="navbar-item" href="../index.html">
                 <img src="../../images/NologoExtended.png" height="112" alt="logo">
-            </a>
-
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
             </a>
         </div>
 
@@ -97,6 +90,10 @@
                 <div class="box">
                     <div id="carousel" class="carousel">
                     </div>
+                </div>
+
+                <div class="buttons are-medium is-centered">
+                    <button id="edit-object" class="button is-info">Modifica</button>
                 </div>
             </div>
             <div class="column is-half has-text-centered">
@@ -148,7 +145,7 @@
 
 
 
-        <!-- MODAL -->
+        <!-- INSTANCE MODAL -->
         <div id="edit-instance-modal" class="modal">
             <div class="modal-background"></div>
             <div class="modal-card">
@@ -209,7 +206,59 @@
             </div>
         </div>
         
-
+        <!-- OBJECT MODAL -->
+        <div id="edit-object-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Aggiungi prodotto</p>
+                    <button id="edit-object-modal-close" class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <form id="edit-object-form" method="post">
+                        <div class="field">
+                            <label class="label" for="name">Nome</label>
+                            <div class="control">
+                                <input id="object-name" name="name" class="input" type="text"
+                                    placeholder="Inserire il nome del prodotto qui">
+                            </div>
+                        </div>
+        
+                        <div class="field">
+                            <label class="label" for="description">Descrizione</label>
+                            <div class="control">
+                                <textarea id="object-description" name="description" class="textarea"
+                                    placeholder="Inserire la descrizione del prodotto qui"></textarea>
+                            </div>
+                        </div>
+        
+                        <div class="field">
+                            <label class="label" for="coverImage">Url immagine</label>
+                            <div class="control">
+                                <input id="object-coverImage" name="coverImage" class="input" type="text"
+                                    placeholder="Inserire l'url dell'immagine">
+                            </div>
+                        </div>
+        
+                        <div id="otherImagesList" class="field">
+                            <label class="label" for="otherImages">Ulteriori immagini (opzionale)</label>
+                            
+                        </div>
+        
+                        <div class="buttons are-medium is-centered">
+                            <button id="plus-image" class="button is-primary is-light"><i class="fas fa-plus"></i></button>
+                            <button id="minus-image" class="button is-danger is-light"><i class="fas fa-minus"></i></button>
+                        </div>
+        
+        
+                    </form>
+                </section>
+                <footer class="modal-card-foot">
+                    <button id="edit-object-submit" type="submit" class="button is-success">Salva</button>
+                    <button id="edit-object-modal-cancel" class="button">Annulla</button>
+                </footer>
+            </div>
+        </div>
     </section>
 
 </body>

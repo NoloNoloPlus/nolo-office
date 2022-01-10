@@ -27,23 +27,14 @@
             text-decoration: line-through;
         }
 
-        .discount-text {
-            
-        }
     </style>
 </head>
 
 <body>
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a class="navbar-item" href="">
+            <a class="navbar-item" href="../index.html">
                 <img src="../../images/NologoExtended.png" height="112" alt="logo">
-            </a>
-
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
             </a>
         </div>
 
@@ -54,10 +45,10 @@
                         <a class="button is-primary" href="../products/catalog.html">
                             <strong>Catalogo</strong>
                         </a>
-                        <a class="button is-primary" href="../rentals/overview.html">
+                        <a class="button is-primary" href="./overview.html">
                             <strong>Noleggi</strong>
                         </a>
-                        <a class="button is-primary" href="./overview.html">
+                        <a class="button is-primary" href="../clients/overview.html">
                             <strong>Clienti</strong>
                         </a>
                     </div>
@@ -103,7 +94,10 @@
                     </div>
                 </div>
         
-                <p id="employeeName" class="title is-5">Approvato da: </p>
+                <div id="approvation">
+                    <p id="employeeName" class="title is-5">Approvato da: </p>
+                    <button id="approve-button" class="button is-info" style="display: none;">Approva noleggio</button>
+                </div>
             </div>
         </div>
     </section>

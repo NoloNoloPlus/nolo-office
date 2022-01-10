@@ -37,7 +37,6 @@ $(document).ready(function () {
             "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
         },
         success: function (data) {
-            console.log(data);
             $('input').each(function () {
                 let field = String($(this).attr('name'));
                 if (!(Object.keys(data).includes(field))) {
@@ -56,15 +55,14 @@ $(document).ready(function () {
             $("#client-role").append(data["role"]);
             $("#avatar-image").attr("src", data["avatarUrl"] || "http://www.gravatar.com/avatar/ee194f150caf4ef175b36caaeb2f7782.jpg?s=48&d=mm");
             
-            
-            $(".pageloader").removeClass('is-active');
-
         },
         error: function (data) {
             alert("Something went wrong: " + data.statusText);
         }
     });
 
+
+    
     $.ajax({
         url: "https://site202114.tw.cs.unibo.it/v1/rentals",
         type: "GET",
@@ -73,6 +71,9 @@ $(document).ready(function () {
         },
         success: function (resp) {
             data = resp.results.filter((v) => v.userId == id);
+
+            let requests = [];
+
             for (let i=0; i<data.length; i++) {
                 data[i]["productId"] = Object.keys(data[i].products)[0]
                 let [startDate, endDate] = findBoundaries(data[i]);
@@ -85,10 +86,29 @@ $(document).ready(function () {
                 data[i]["endDate"] = endDate.toISOString().split("T")[0];
 
                 data[i]["price"] = rentalPrice(data[i], false).toFixed(2);
+
+                requests.push(
+                    $.ajax({
+                        url: "https://site202114.tw.cs.unibo.it/v1/products/" + data[i]["productId"],
+                        type: "GET",
+                        headers: {
+                            "Authorization": "Bearer " + JSON.parse(localStorage.getItem("tokens"))["access"]["token"]
+                        },
+                        success: function (resp) {
+                            data[i]["productName"] = resp.name;
+                        }
+                    })
+                );
             }
-            console.log(data);
-            let templateRentals = Handlebars.compile($("#client-rentals-template").html());
-            $("table").html(templateRentals(data));
+
+            Promise.all(requests).then(() => {
+                let templateRentals = Handlebars.compile($("#client-rentals-template").html());
+                $("table").html(templateRentals(data));
+                $(".pageloader").removeClass('is-active');
+
+            });
+
+
         }
     })
 
@@ -110,7 +130,6 @@ $(document).ready(function () {
         let saved_data = {};
         $('input').each(function () {
             saved_data[$(this).attr('name')] = $(this).val();
-            console.log($(this).val());
         });
 
         $("#cancel-update").click(function () {
@@ -143,7 +162,6 @@ $(document).ready(function () {
 
             emptyToNone(patchData.address);
             removeEmpty(patchData);
-            console.log(patchData);
 
             $.ajax({
                 url: "https://site202114.tw.cs.unibo.it/v1/users/" + id,
@@ -160,7 +178,6 @@ $(document).ready(function () {
                 },
                 error: function (data) {
                     $(this).removeClass('is-loading');
-                    console.log(data.responseText);
                 }
             });
         });

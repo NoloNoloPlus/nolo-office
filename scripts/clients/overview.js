@@ -11,7 +11,6 @@ $(document).ready(function () {
             role: "user"
         },
         success: function (data) {
-            console.log(data);
             var template = Handlebars.compile($("#client-row-template").html());
             $("table").html(template(data));
             $('.pageloader').removeClass('is-active');

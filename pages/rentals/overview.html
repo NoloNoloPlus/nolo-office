@@ -28,14 +28,8 @@
 <body>
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a class="navbar-item" href="">
+            <a class="navbar-item" href="../index.html">
                 <img src="../../images/NologoExtended.png" height="112" alt="logo">
-            </a>
-
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
             </a>
         </div>
 
@@ -46,10 +40,10 @@
                         <a class="button is-primary" href="../products/catalog.html">
                             <strong>Catalogo</strong>
                         </a>
-                        <a class="button is-primary" href="../rentals/overview.html">
+                        <a class="button is-primary" href="javascript:window.location.reload(true)">
                             <strong>Noleggi</strong>
                         </a>
-                        <a class="button is-primary" href="javascript:window.location.reload(true)">
+                        <a class="button is-primary" href="../clients/overview.html">
                             <strong>Clienti</strong>
                         </a>
                     </div>
@@ -104,8 +98,10 @@
                     <p class="has-text-weight-semibold">
                         By user: <strong>{{userId}}</strong>
                         <br>
+                        {{#if approvedBy}}
                         Approved by: <strong>{{approvedBy}}</strong>
                         <br>
+                        {{/if}}
                         <br>
                         {{#ifEquals status "ready"}}
                             <span class="tag is-danger">ready</span>
